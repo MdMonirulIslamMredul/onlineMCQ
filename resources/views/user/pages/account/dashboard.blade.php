@@ -36,30 +36,32 @@ $completedPracticeQuizzes = \App\Models\PracticeSession::where('user_id', option
     ->get();
 @endphp
 
-<!-- Start Hero / Breadcrumb Area -->
-<div class="student-hero" style="padding: 50px 0 60px;">
+<!-- Start Compact Hero / Breadcrumb Area -->
+<div class="student-hero" style="padding: 20px 0 22px;">
     <div class="container">
-        <div class="row align-items-center">
+        <div class="row align-items-center g-3">
             <div class="col-lg-8 col-12">
-                <nav aria-label="breadcrumb">
-                    <ul class="d-flex align-items-center gap-2 p-0 mb-3" style="list-style: none; font-size: 14px;">
-                        <li><a href="{{ route('/') }}" style="color: #94a3b8; text-decoration: none;">Home</a></li>
-                        <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">Student Dashboard</li>
-                    </ul>
-                </nav>
-                <div class="student-hero-badge">
-                    <i class="feather-user"></i> Student Learning Portal
+                <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <nav aria-label="breadcrumb" class="d-inline-block">
+                        <ul class="d-flex align-items-center gap-2 p-0 m-0" style="list-style: none; font-size: 13px;">
+                            <li><a href="{{ route('/') }}" style="color: #94a3b8; text-decoration: none;">Home</a></li>
+                            <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
+                            <li style="color: #03c6bb; font-weight: 600;">Student Dashboard</li>
+                        </ul>
+                    </nav>
+                    <span class="badge rounded-pill" style="background: rgba(3, 198, 187, 0.15); border: 1px solid rgba(3, 198, 187, 0.3); color: #03c6bb; font-size: 11px; padding: 3px 10px; font-weight: 600;">
+                        <i class="feather-user me-1"></i> Student Learning Portal
+                    </span>
                 </div>
-                <h1 class="student-hero-title mb-2" style="font-size: clamp(26px, 3.5vw, 38px);">
+                <h2 class="student-hero-title mb-1" style="font-size: clamp(20px, 2.5vw, 28px); font-weight: 800; color: #ffffff;">
                     Welcome back, {{ $userName }}!
-                </h1>
-                <p class="student-hero-desc mb-0">
+                </h2>
+                <p class="student-hero-desc mb-0" style="font-size: 13px; color: #94a3b8; line-height: 1.5;">
                     Track your exam preparation progress, review test performances, and continue course modules.
                 </p>
             </div>
-            <div class="col-lg-4 col-12 mt-4 mt-lg-0 text-lg-end">
-                <a href="{{ route('all.courses') }}" class="rbt-btn btn-gradient radius-round">
+            <div class="col-lg-4 col-12 text-lg-end">
+                <a href="{{ route('all.courses') }}" class="rbt-btn btn-sm btn-gradient radius-round py-2 px-4 shadow-sm" style="font-size: 14px;">
                     <span class="btn-text">Take a Practice Exam</span>
                     <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                 </a>
@@ -69,7 +71,7 @@ $completedPracticeQuizzes = \App\Models\PracticeSession::where('user_id', option
 </div>
 <!-- End Hero Area -->
 
-<div class="rbt-section-gap bg-color-white">
+<div class="rbt-section-gap bg-color-white" style="padding-top: 35px;">
     <div class="container">
         <div class="row g-4">
             <!-- Sidebar Navigation -->
