@@ -53,15 +53,19 @@ class PracticeQuizController extends Controller
 
         $quizzes = $query->orderBy('id', 'DESC')->paginate(12);
 
-        // Attach user session state if logged in
+        // Attach user session state and history if logged in
         if ($userId) {
-            $sessions = PracticeSession::where('user_id', $userId)
+            $userSessions = PracticeSession::where('user_id', $userId)
                 ->whereIn('practice_quiz_id', $quizzes->pluck('id'))
-                ->get()
-                ->keyBy('practice_quiz_id');
+                ->orderBy('id', 'desc')
+                ->get();
 
             foreach ($quizzes as $quiz) {
-                $quiz->user_session = $sessions->get($quiz->id);
+                $quizSessions = $userSessions->where('practice_quiz_id', $quiz->id);
+                $quiz->active_session = $quizSessions->firstWhere('status', 'in_progress');
+                $quiz->last_completed_session = $quizSessions->where('status', 'completed')->first();
+                $quiz->completed_count = $quizSessions->where('status', 'completed')->count();
+                $quiz->user_session = $quiz->active_session ?: $quiz->last_completed_session;
             }
         }
 

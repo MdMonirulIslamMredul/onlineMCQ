@@ -53,6 +53,78 @@
         transition: width 0.4s ease;
     }
 
+    /* Practice Card Action Buttons */
+    .btn-practice-start {
+        background: transparent;
+        border: 2px solid #03c6bb;
+        color: #009e95;
+        font-weight: 700;
+        transition: all 0.25s ease;
+        text-decoration: none;
+    }
+    .btn-practice-start:hover, .btn-practice-start:focus {
+        background: linear-gradient(135deg, #03c6bb 0%, #4f46e5 100%) !important;
+        border-color: transparent !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 18px rgba(3, 198, 187, 0.35);
+        transform: translateY(-2px);
+    }
+    .btn-practice-resume {
+        background: linear-gradient(135deg, #03c6bb 0%, #4f46e5 100%);
+        border: 2px solid transparent;
+        color: #ffffff !important;
+        font-weight: 700;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(3, 198, 187, 0.25);
+    }
+    .btn-practice-resume:hover, .btn-practice-resume:focus {
+        background: linear-gradient(135deg, #02b0a6 0%, #3e38c7 100%) !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 20px rgba(3, 198, 187, 0.4);
+        transform: translateY(-2px);
+    }
+    .btn-practice-again {
+        background: #03c6bb;
+        border: 2px solid #03c6bb;
+        color: #ffffff !important;
+        font-weight: 700;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(3, 198, 187, 0.2);
+    }
+    .btn-practice-again:hover, .btn-practice-again:focus {
+        background: #009e95 !important;
+        border-color: #009e95 !important;
+        color: #ffffff !important;
+        box-shadow: 0 8px 18px rgba(3, 198, 187, 0.35);
+        transform: translateY(-2px);
+    }
+    .btn-practice-review {
+        border: 2px solid #e2e8f0;
+        color: #64748b;
+        font-weight: 600;
+        background: #f8fafc;
+        transition: all 0.2s ease;
+    }
+    .btn-practice-review:hover, .btn-practice-review:focus {
+        border-color: #03c6bb;
+        color: #009e95 !important;
+        background: rgba(3, 198, 187, 0.08);
+    }
+    .practice-history-pill {
+        background: rgba(245, 158, 11, 0.08);
+        border: 1px solid rgba(245, 158, 11, 0.25);
+        border-radius: 12px;
+        padding: 8px 12px;
+        font-size: 12px;
+        color: #b45309;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+    }
+
     /* Dark Mode Styles */
     body.dark .practice-hero {
         background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.08) 0%, transparent 40%),
@@ -85,6 +157,27 @@
         background: #03c6bb !important;
         color: #ffffff !important;
         border-color: #03c6bb !important;
+    }
+    body.dark .btn-practice-start {
+        border-color: #03c6bb;
+        color: #03c6bb;
+    }
+    body.dark .btn-practice-start:hover {
+        color: #ffffff !important;
+    }
+    body.dark .btn-practice-review {
+        background: #1e293b;
+        border-color: #334155;
+        color: #94a3b8;
+    }
+    body.dark .btn-practice-review:hover {
+        border-color: #03c6bb;
+        color: #03c6bb !important;
+    }
+    body.dark .practice-history-pill {
+        background: rgba(245, 158, 11, 0.12);
+        border-color: rgba(245, 158, 11, 0.3);
+        color: #fbbf24;
     }
 </style>
 @endpush
@@ -165,10 +258,9 @@
         <div class="row g-4">
             @forelse($quizzes as $quiz)
                 @php
-                    $session = $quiz->user_session ?? null;
-                    $isCompleted = optional($session)->status === 'completed';
-                    $hasProgress = $session && optional($session)->total_attempts > 0;
-                    $progressPercent = $session ? $session->progress_percent : 0;
+                    $activeSession = $quiz->active_session ?? null;
+                    $lastCompleted = $quiz->last_completed_session ?? null;
+                    $hasActive = $activeSession && $activeSession->status === 'in_progress';
                 @endphp
                 <div class="col-lg-4 col-md-6 col-12">
                     <div class="practice-card p-4">
@@ -206,39 +298,53 @@
                             </span>
                         </div>
 
-                        <!-- User Session Progress If Started -->
-                        @if($hasProgress)
+                        <!-- User Session Progress If Active -->
+                        @if($hasActive)
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="small font-weight-bold" style="font-size: 12px; color: {{ $isCompleted ? '#10b981' : '#03c6bb' }};">
-                                        {{ $isCompleted ? '🎉 Completed & Mastered!' : 'In Progress (' . $session->mastered_questions . '/' . $session->total_questions . ' mastered)' }}
+                                    <span class="small font-weight-bold" style="font-size: 12px; color: #03c6bb;">
+                                        <i class="feather-clock me-1"></i> In Progress ({{ $activeSession->mastered_questions }}/{{ $activeSession->total_questions }} mastered)
                                     </span>
                                     <span class="small font-weight-bold text-dark-title" style="font-size: 12px;">
-                                        {{ $progressPercent }}%
+                                        {{ $activeSession->progress_percent }}%
                                     </span>
                                 </div>
                                 <div class="practice-progress-bar">
-                                    <div class="practice-progress-fill" style="width: {{ $progressPercent }}%; {{ $isCompleted ? 'background: #10b981;' : '' }}"></div>
+                                    <div class="practice-progress-fill" style="width: {{ $activeSession->progress_percent }}%;"></div>
                                 </div>
                             </div>
                         @endif
 
+                        <!-- Past History Pill If Completed Previously -->
+                        @if($lastCompleted)
+                            <div class="practice-history-pill">
+                                <div class="d-flex align-items-center gap-1 font-weight-bold">
+                                    <i class="feather-award text-warning"></i>
+                                    <span>Last Result: <strong>{{ $lastCompleted->accuracy_percent }}%</strong></span>
+                                    <span class="text-muted ms-1" style="font-size: 11px;">({{ $lastCompleted->total_attempts }} attempts)</span>
+                                </div>
+                                <span class="badge bg-success text-white fw-bold px-2 py-1 rounded-pill" style="font-size: 10px;">
+                                    ✔ Mastered
+                                </span>
+                            </div>
+                        @endif
+
                         <div class="mt-auto">
-                            @if($isCompleted)
+                            @if($hasActive)
+                                <a href="{{ route('practice_quiz.play', $activeSession->id) }}" class="btn btn-practice-resume rounded-pill w-100 d-flex align-items-center justify-content-center gap-2 py-2">
+                                    <i class="feather-play"></i> Resume Practice ({{ $activeSession->progress_percent }}%)
+                                </a>
+                            @elseif($lastCompleted)
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('practice_quiz.start', ['id' => $quiz->id, 'restart' => 1]) }}" class="btn btn-primary rounded-pill flex-grow-1 d-flex align-items-center justify-content-center gap-2" style="font-weight: 700;">
-                                        <i class="feather-play-circle"></i> Practice Again
+                                    <a href="{{ route('practice_quiz.start', ['id' => $quiz->id, 'restart' => 1]) }}" class="btn btn-practice-again rounded-pill flex-grow-1 d-flex align-items-center justify-content-center gap-2 py-2">
+                                        <i class="feather-rotate-ccw"></i> Practice Again
                                     </a>
-                                    <a href="{{ route('practice_quiz.review', $session->id) }}" class="btn btn-outline-secondary rounded-pill px-3" title="Review Explanations">
+                                    <a href="{{ route('practice_quiz.review', $lastCompleted->id) }}" class="btn btn-practice-review rounded-pill px-3 d-flex align-items-center justify-content-center" title="Review Explanations">
                                         <i class="feather-book-open"></i>
                                     </a>
                                 </div>
-                            @elseif($hasProgress)
-                                <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-gradient rounded-pill w-100 d-flex align-items-center justify-content-center gap-2" style="font-weight: 700;">
-                                    <i class="feather-play"></i> Resume Practice ({{ $progressPercent }}%)
-                                </a>
                             @else
-                                <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-outline-primary rounded-pill w-100 d-flex align-items-center justify-content-center gap-2" style="font-weight: 700; border-color: #03c6bb; color: #009e95;">
+                                <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-practice-start rounded-pill w-100 d-flex align-items-center justify-content-center gap-2 py-2">
                                     <i class="feather-play-circle"></i> Start Preparation Game
                                 </a>
                             @endif
