@@ -1,0 +1,765 @@
+/* ==========================================================================
+   UDDOKTA COURSE - MODERN STUDENT-CENTRIC EDTECH DESIGN SYSTEM
+   Palette: Teal (#03c6bb), Deep Slate (#0f172a), Indigo (#4f46e5)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #03c6bb;
+    --primary-dark: #009e95;
+    --primary-light: #e6faf8;
+    --primary-gradient: linear-gradient(135deg, #03c6bb 0%, #009e95 100%);
+    
+    --indigo: #4f46e5;
+    --indigo-light: #eef2ff;
+    --indigo-gradient: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
+    
+    --slate-900: #0f172a;
+    --slate-800: #1e293b;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --slate-50: #f8fafc;
+    
+    --success: #10b981;
+    --success-light: #ecfdf5;
+    --danger: #ef4444;
+    --danger-light: #fef2f2;
+    --warning: #f59e0b;
+    --warning-light: #fffbeb;
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+    --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+    --shadow-hover: 0 20px 30px -10px rgba(3, 198, 187, 0.25);
+    
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    font-family: var(--font-body) !important;
+    color: var(--slate-700);
+    background-color: var(--slate-50);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Fix squished / vertical paragraph wrapping in section titles */
+.section-subtext,
+.section-title.text-center .description,
+.section-title .description,
+.section-title p.description,
+.section-title p {
+    padding: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100% !important;
+    max-width: 680px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: block !important;
+    line-height: 1.7 !important;
+    font-size: 16px !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+}
+
+h1, h2, h3, h4, h5, h6, .title, .rbt-card-title {
+    font-family: var(--font-heading) !important;
+    font-weight: 700;
+    color: var(--slate-900);
+    letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   Modern Header & Nav
+   ========================================================================== */
+.rbt-header-wrapper {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--slate-200);
+    transition: var(--transition);
+}
+
+.rbt-header .mainmenu-nav .mainmenu > li > a {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--slate-700);
+    padding: 24px 14px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.rbt-header .mainmenu-nav .mainmenu > li > a:hover,
+.rbt-header .mainmenu-nav .mainmenu > li.active > a {
+    color: var(--primary);
+}
+
+.rbt-header-btn-login {
+    background: var(--primary-gradient) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 22px;
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 14px rgba(3, 198, 187, 0.35);
+    transition: var(--transition);
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rbt-header-btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(3, 198, 187, 0.45);
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Modern Hero Section
+   ========================================================================== */
+.student-hero {
+    position: relative;
+    padding: 85px 0 100px;
+    background: linear-gradient(135deg, #0b1329 0%, #0f172a 60%, #1e1b4b 100%);
+    overflow: hidden;
+}
+
+.student-hero::before {
+    content: '';
+    position: absolute;
+    top: -150px;
+    right: -150px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(3, 198, 187, 0.22) 0%, rgba(3, 198, 187, 0) 70%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.student-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    left: -150px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(79, 70, 229, 0.22) 0%, rgba(79, 70, 229, 0) 70%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.student-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.student-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(3, 198, 187, 0.15);
+    border: 1px solid rgba(3, 198, 187, 0.35);
+    color: #03c6bb;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.student-hero-title {
+    color: #ffffff !important;
+    font-size: clamp(30px, 4.8vw, 52px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.student-hero-title span {
+    background: linear-gradient(135deg, #03c6bb 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.student-hero-desc {
+    color: var(--slate-200);
+    font-size: clamp(15px, 1.8vw, 18px);
+    line-height: 1.65;
+    max-width: 620px;
+    margin-bottom: 35px;
+}
+
+.hero-stats-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 45px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero-stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.hero-stat-num {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+}
+
+.hero-stat-label {
+    font-size: 13px;
+    color: var(--slate-400);
+}
+
+/* ==========================================================================
+   Modern Service & Category Cards
+   ========================================================================== */
+.modern-category-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    padding: 20px;
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.modern-category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.modern-category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: rgba(3, 198, 187, 0.4);
+}
+
+.modern-category-card:hover::before {
+    opacity: 1;
+}
+
+.modern-category-img-wrap {
+    height: 160px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 16px;
+    background: var(--slate-100);
+}
+
+.modern-category-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.modern-category-card:hover .modern-category-img-wrap img {
+    transform: scale(1.06);
+}
+
+.modern-category-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--slate-900);
+    margin-bottom: 8px;
+    line-height: 1.35;
+}
+
+.modern-category-meta {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--slate-100);
+}
+
+.modern-category-badge {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ==========================================================================
+   Modern Course Cards
+   ========================================================================== */
+.modern-course-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    overflow: hidden;
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-sm);
+}
+
+.modern-course-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: rgba(3, 198, 187, 0.35);
+}
+
+.modern-course-thumb {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: var(--slate-100);
+}
+
+.modern-course-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.modern-course-card:hover .modern-course-thumb img {
+    transform: scale(1.05);
+}
+
+.modern-course-badge-top {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    z-index: 2;
+}
+
+.modern-course-body {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.modern-course-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--slate-500);
+    margin-bottom: 12px;
+}
+
+.modern-course-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.modern-course-title {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--slate-900);
+    line-height: 1.4;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.modern-course-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.modern-course-title a:hover {
+    color: var(--primary);
+}
+
+.modern-course-footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--slate-100);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modern-course-price {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary-dark);
+}
+
+.modern-btn-enroll {
+    background: var(--primary-gradient);
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: var(--transition);
+}
+
+.modern-btn-enroll:hover {
+    box-shadow: 0 4px 12px rgba(3, 198, 187, 0.35);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Modern Exam / Test Taking Portal (Student Friendly)
+   ========================================================================== */
+.exam-portal-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--slate-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 14px 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.exam-timer-box {
+    background: var(--slate-900);
+    color: #ffffff;
+    padding: 8px 18px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.exam-timer-box i {
+    color: var(--primary);
+    animation: pulse 1.5s infinite;
+}
+
+.exam-question-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    padding: 30px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.exam-question-number {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    margin-bottom: 14px;
+}
+
+.exam-question-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--slate-900);
+    line-height: 1.5;
+    margin-bottom: 22px;
+}
+
+.exam-option-item {
+    display: block;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.exam-option-item input[type="radio"] {
+    display: none;
+}
+
+.exam-option-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    background: var(--slate-50);
+    border: 2px solid var(--slate-200);
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+    font-size: 15px;
+    color: var(--slate-800);
+    font-weight: 500;
+}
+
+.exam-option-key {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid var(--slate-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--slate-600);
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.exam-option-item:hover .exam-option-label {
+    border-color: var(--primary);
+    background: rgba(3, 198, 187, 0.04);
+}
+
+.exam-option-item input[type="radio"]:checked + .exam-option-label {
+    border-color: var(--primary);
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.exam-option-item input[type="radio"]:checked + .exam-option-label .exam-option-key {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+/* Exam Result Card */
+.exam-result-card {
+    background: #ffffff;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--slate-200);
+    padding: 40px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+}
+
+.score-meter-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #03c6bb 0%, #4f46e5 100%);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 10px 25px rgba(3, 198, 187, 0.35);
+}
+
+.score-meter-num {
+    font-family: var(--font-heading);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.score-meter-sub {
+    font-size: 13px;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Modern Student Dashboard
+   ========================================================================== */
+.student-dashboard-sidebar {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.student-avatar-wrap {
+    text-align: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--slate-100);
+    margin-bottom: 20px;
+}
+
+.student-avatar-img {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    border: 3px solid var(--primary);
+    object-fit: cover;
+    margin: 0 auto 12px;
+}
+
+.student-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    color: var(--slate-600);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
+    margin-bottom: 6px;
+}
+
+.student-nav-item i {
+    font-size: 18px;
+}
+
+.student-nav-item:hover,
+.student-nav-item.active {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.student-kpi-card {
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--slate-200);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: var(--transition);
+}
+
+.student-kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.student-kpi-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.kpi-icon-teal {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.kpi-icon-indigo {
+    background: var(--indigo-light);
+    color: var(--indigo);
+}
+
+.kpi-icon-emerald {
+    background: var(--success-light);
+    color: var(--success);
+}
+
+.student-kpi-val {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--slate-900);
+    line-height: 1.1;
+}
+
+.student-kpi-label {
+    font-size: 13px;
+    color: var(--slate-500);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Mobile Ergonomics & Responsive Tuning
+   ========================================================================== */
+@media (max-width: 768px) {
+    .student-hero {
+        padding: 60px 0 80px;
+    }
+    
+    .hero-stats-wrapper {
+        gap: 16px;
+    }
+    
+    .modern-course-thumb {
+        height: 180px;
+    }
+    
+    .exam-question-card {
+        padding: 20px;
+    }
+    
+    .exam-timer-box {
+        padding: 6px 14px;
+        font-size: 15px;
+    }
+}

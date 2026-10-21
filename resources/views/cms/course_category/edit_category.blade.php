@@ -1,0 +1,82 @@
+@extends('cms.cms_master')
+@section('admin_content')
+<section class="section">
+    <div class="section-header">
+        <h1>Update Categories</h1>
+    </div>
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <form class="form" action="{{ url('update_course_category/'.$category->id) }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="old_image" value="{{ $category->image }}">
+                            <div class="row">
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <label for="first-name-column">Category Name</label>
+                                        <input type="text" id="category_name" class="form-control"
+                                           value="{{ $category->name }}" name="name" required />
+                                    </div>
+                                    @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    <div class="form-group">
+                                    <label for="first-name-column">Url</label>
+                                    <input type="text" id="category_url" class="form-control" value="{{ $category->url }}"
+                                        name="url" required/>
+                                        @error('url')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                </div>
+                                {{-- <div class="form-group">
+                                    <label for="inputEmail4"><span class="text-danger">*</span>Free or Paid</label>
+                                    <select name="free_paid" id="" class="form-control" required="">
+                                        <option value="">Select One</option>
+                                        <option @if($category->free_paid == 'free') selected @endif value="free">Free</option>
+                                        <option @if($category->free_paid == 'paid') selected @endif value="paid">Paid</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputPassword4">Tk(Only for Paid Category)</label>
+                                    <input type="number" name="tk" value="{{ $category->tk }}" class="form-control" step=any>
+                                </div> --}}
+
+                                </div>
+                                <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label for="first-name-column">Category Image(400 X 400)</label>
+                                            <input type="file" id="first-name-column" class="form-control"
+                                                placeholder="Category Name" name="image" />
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                        <label for="first-name-column">Previous Image</label><br>
+                                            <img style="border-radius: 5px;" src="{{ asset($category->image) }}" alt="" width="39" height="39">
+                                        </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="first-name-column">Publish Rank</label>
+                                    <input type="number" class="form-control"
+                                           value="{{ $category->rank }}" name="rank" required />
+                                </div>
+                                <div class="col-md-12 col-12">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success form-control">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+@endsection

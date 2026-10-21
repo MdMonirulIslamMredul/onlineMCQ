@@ -1,0 +1,1292 @@
+/* ==========================================================================
+   PATHJOLPONA - MODERN EDTECH DARK MODE THEME SYSTEM
+   Palette: Deep Slate Canvas (#0b1120), Surface (#1e293b), Elevated (#243247),
+            Borders (#334155), Primary Teal (#03c6bb), Text Primary (#f8fafc),
+            Text Muted (#94a3b8)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Theme Variables & Root Settings
+   -------------------------------------------------------------------------- */
+:root[data-theme="dark"],
+html.dark-theme {
+    --primary: #03c6bb;
+    --primary-dark: #00b3a8;
+    --primary-light: rgba(3, 198, 187, 0.18);
+    --primary-gradient: linear-gradient(135deg, #03c6bb 0%, #009e95 100%);
+    
+    --indigo: #6366f1;
+    --indigo-light: rgba(99, 102, 241, 0.18);
+    
+    /* Inverted Slates for dark mode */
+    --slate-900: #f8fafc;
+    --slate-800: #f1f5f9;
+    --slate-700: #e2e8f0;
+    --slate-600: #cbd5e1;
+    --slate-500: #94a3b8;
+    --slate-400: #64748b;
+    --slate-200: #334155;
+    --slate-100: #1e293b;
+    --slate-50: #0f172a;
+
+    --bg-canvas: #0b1120;
+    --bg-surface: #1e293b;
+    --bg-surface-elevated: #243247;
+    --bg-input: #131c2e;
+    
+    --border-color: #334155;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.35);
+    --card-shadow-hover: 0 20px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(3, 198, 187, 0.25);
+
+    /* Histudy Framework Theme Inversions */
+    --color-heading: #f8fafc;
+    --color-body: #cbd5e1;
+    --color-white: #1e293b;
+    --color-white-off: rgba(255, 255, 255, 0.15);
+    --color-bodyest: #94a3b8;
+    --color-dark: #f8fafc;
+    --color-darker: #f8fafc;
+    --color-black: #ffffff;
+    --color-light: #0f172a;
+    --color-lighter: #131c2e;
+    --color-gray-light: #162032;
+    --color-gray-lighter: #1e293b;
+    --color-grey2: #1e293b;
+    --color-extra: #0f172a;
+    --color-extra2: #131c2e;
+    --color-border: #334155;
+    --color-border-2: #243247;
+    --shadow-1: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    --shadow-2: 0 10px 25px -4px rgba(0, 0, 0, 0.6);
+    --shadow-3: 0 15px 30px -6px rgba(0, 0, 0, 0.7);
+    --shadow-light: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+    --shadow-dark: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+
+    color-scheme: dark;
+}
+
+/* --------------------------------------------------------------------------
+   2. Body & Core Wrappers
+   -------------------------------------------------------------------------- */
+html.dark-theme,
+html.dark-theme body,
+html.dark-theme #main-wrapper,
+html.dark-theme body.red-skin,
+html.dark-theme body.rbt-header-sticky {
+    background-color: var(--bg-canvas) !important;
+    color: var(--text-secondary) !important;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography & Global Text Visibility Overrides
+   -------------------------------------------------------------------------- */
+html.dark-theme h1,
+html.dark-theme h2,
+html.dark-theme h3,
+html.dark-theme h4,
+html.dark-theme h5,
+html.dark-theme h6,
+html.dark-theme .title,
+html.dark-theme .rbt-card-title,
+html.dark-theme .rbt-card-title a,
+html.dark-theme .section-title h2,
+html.dark-theme .section-title h3,
+html.dark-theme .section-title h4 {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme p {
+    color: var(--text-secondary);
+}
+
+html.dark-theme .text-muted,
+html.dark-theme .text-secondary,
+html.dark-theme .section-subtext {
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .text-dark,
+html.dark-theme .color-darker,
+html.dark-theme .color-body {
+    color: var(--text-primary) !important;
+}
+
+/* Override inline dark text colors rendered from blade templates */
+html.dark-theme [style*="color: #0f172a"],
+html.dark-theme [style*="color: rgb(15, 23, 42)"],
+html.dark-theme [style*="color:#0f172a"],
+html.dark-theme [style*="color: #1e293b"],
+html.dark-theme [style*="color: rgb(30, 41, 59)"],
+html.dark-theme [style*="color:#1e293b"],
+html.dark-theme [style*="color: #334155"],
+html.dark-theme [style*="color: rgb(51, 65, 85)"],
+html.dark-theme [style*="color:#334155"],
+html.dark-theme [style*="color: #475569"],
+html.dark-theme [style*="color: rgb(71, 85, 105)"],
+html.dark-theme [style*="color:#475569"],
+html.dark-theme [style*="color: #333"],
+html.dark-theme [style*="color: #000"] {
+    color: var(--text-primary) !important;
+}
+
+/* Override inline muted/gray colors for high contrast */
+html.dark-theme [style*="color: #64748b"],
+html.dark-theme [style*="color: rgb(100, 116, 139)"],
+html.dark-theme [style*="color:#64748b"],
+html.dark-theme [style*="color: #777"] {
+    color: var(--text-muted) !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. Header & Navigation (Both Header Styles)
+   -------------------------------------------------------------------------- */
+/* Header 1 (frontend11 / user.pages.body.header) */
+html.dark-theme .header,
+html.dark-theme .header-light,
+html.dark-theme .header.header-light {
+    background-color: rgba(15, 23, 42, 0.96) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+html.dark-theme .nav-menu > li > a {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .nav-menu > li > a:hover,
+html.dark-theme .nav-menu > li.active > a {
+    color: var(--primary) !important;
+}
+
+html.dark-theme .nav-dropdown {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark-theme .nav-dropdown > li > a {
+    color: var(--text-secondary) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+html.dark-theme .nav-dropdown > li > a:hover {
+    color: var(--primary) !important;
+    background-color: var(--bg-surface-elevated) !important;
+}
+
+/* Mobile Slide-out Menu for frontend11 */
+html.dark-theme .navigation-portrait .nav-menus-wrapper {
+    background-color: #0f172a !important;
+    border-right: 1px solid var(--border-color) !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark-theme .navigation-portrait .nav-menu > li > a {
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+html.dark-theme .nav-toggle:before {
+    background-color: var(--text-primary) !important;
+    box-shadow: 0 0.5em 0 0 var(--text-primary), 0 1em 0 0 var(--text-primary) !important;
+}
+
+/* Header 2 (Histudy / user.pages.inc.header) */
+html.dark-theme .rbt-header-wrapper {
+    background: rgba(15, 23, 42, 0.94) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+html.dark-theme .rbt-header .mainmenu-nav .mainmenu > li > a {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .rbt-header .mainmenu-nav .mainmenu > li > a:hover,
+html.dark-theme .rbt-header .mainmenu-nav .mainmenu > li.active > a {
+    color: var(--primary) !important;
+}
+
+html.dark-theme .rbt-header .submenu {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark-theme .rbt-header .submenu li a {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .rbt-header .submenu li a:hover {
+    color: var(--primary) !important;
+    background-color: rgba(3, 198, 187, 0.1) !important;
+}
+
+/* User Account Profile Dropdown */
+html.dark-theme .rbt-user-menu-list-wrapper {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55) !important;
+}
+
+html.dark-theme .rbt-admin-profile {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+html.dark-theme .rbt-admin-profile .admin-info .name {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .user-list-wrapper li a {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .user-list-wrapper li a:hover {
+    color: var(--primary) !important;
+    background: rgba(3, 198, 187, 0.12) !important;
+}
+
+/* Mobile Popup Menu (Histudy) */
+html.dark-theme .popup-mobile-menu .inner-wrapper {
+    background-color: #0f172a !important;
+    border-right: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .popup-mobile-menu .inner-top {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+html.dark-theme .popup-mobile-menu .mainmenu-nav .mainmenu > li > a {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .popup-mobile-menu .navbar-top-left li a {
+    color: var(--text-muted) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. CARDS & GRID CONTAINERS (Fixes Visibility & White Card Issues)
+   -------------------------------------------------------------------------- */
+html.dark-theme .bg-color-white,
+html.dark-theme .bg-white,
+html.dark-theme .bg-light,
+html.dark-theme .bg-color-extra-light {
+    background-color: var(--bg-canvas) !important;
+}
+
+/* All Card Components */
+html.dark-theme .modern-category-card,
+html.dark-theme .modern-cat-grid-card,
+html.dark-theme .modern-exam-card,
+html.dark-theme .modern-course-card,
+html.dark-theme .modern-blog-card,
+html.dark-theme .contact-card-modern,
+html.dark-theme .student-kpi-card,
+html.dark-theme .student-dashboard-sidebar,
+html.dark-theme .exam-question-card,
+html.dark-theme .exam-result-card,
+html.dark-theme .rbt-default-card,
+html.dark-theme .rbt-default-card .inner,
+html.dark-theme .rbt-default-card.style-three,
+html.dark-theme .rbt-default-card.style-three .inner,
+html.dark-theme .team-style-default .inner,
+html.dark-theme .rbt-shadow-box,
+html.dark-theme .rbt-course-feature-box,
+html.dark-theme .rbt-default-sidebar,
+html.dark-theme .rbt-dashboard-content,
+html.dark-theme .course-sidebar,
+html.dark-theme .overview-wrapper,
+html.dark-theme .coursecontent-wrapper,
+html.dark-theme .course-grid-3,
+html.dark-theme .single-course,
+html.dark-theme .education_block_grid,
+html.dark-theme .dashboard_wrap,
+html.dark-theme .dashboard-wraper,
+html.dark-theme .dashboard_single_course,
+html.dark-theme .edu_cat_2,
+html.dark-theme .card,
+html.dark-theme .rbt-card,
+html.dark-theme .rbt-card .rbt-card-body,
+html.dark-theme .rbt-comment-form,
+html.dark-theme .single-comment,
+html.dark-theme .individualExam {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+/* Card Hover Effects */
+html.dark-theme .modern-category-card:hover,
+html.dark-theme .modern-cat-grid-card:hover,
+html.dark-theme .modern-exam-card:hover,
+html.dark-theme .modern-course-card:hover,
+html.dark-theme .modern-blog-card:hover,
+html.dark-theme .contact-card-modern:hover,
+html.dark-theme .card:hover,
+html.dark-theme .rbt-card:hover,
+html.dark-theme .rbt-default-card.style-three:hover .inner,
+html.dark-theme .rbt-default-card:hover .inner,
+html.dark-theme .team-style-default:hover .inner,
+html.dark-theme .individualExam:hover {
+    box-shadow: var(--card-shadow-hover) !important;
+    border-color: var(--primary) !important;
+}
+
+/* Card Thumbnail & Image Box Containers */
+html.dark-theme .modern-category-img-wrap,
+html.dark-theme .modern-cat-img-box,
+html.dark-theme .modern-exam-thumb,
+html.dark-theme .modern-course-thumb,
+html.dark-theme .modern-blog-thumb,
+html.dark-theme .rbt-default-card .thumbnail,
+html.dark-theme .rbt-default-card.style-three .thumbnail,
+html.dark-theme .edu_cat_icons {
+    background-color: #121b2d !important;
+}
+
+/* Card Headings & Titles in Dark Mode */
+html.dark-theme .modern-category-title,
+html.dark-theme .modern-cat-title,
+html.dark-theme .modern-exam-title,
+html.dark-theme .modern-exam-title a,
+html.dark-theme .modern-course-title,
+html.dark-theme .modern-course-title a,
+html.dark-theme .modern-blog-title,
+html.dark-theme .modern-blog-title a,
+html.dark-theme .contact-card-modern h4,
+html.dark-theme .instructor_caption h4,
+html.dark-theme .edu_cat_data .title,
+html.dark-theme .edu_cat_data .title a,
+html.dark-theme .rbt-default-card .title,
+html.dark-theme .rbt-default-card .title a,
+html.dark-theme .rbt-default-card.style-three .inner .title,
+html.dark-theme .rbt-default-card.style-three .inner .title a,
+html.dark-theme .rbt-card-body .rbt-card-title,
+html.dark-theme .rbt-card-body .rbt-card-title a,
+html.dark-theme .indviExamA {
+    color: var(--text-primary) !important;
+    transition: color 0.2s ease;
+}
+
+/* Card Title Hover */
+html.dark-theme .modern-category-card:hover .modern-category-title,
+html.dark-theme .modern-cat-grid-card:hover .modern-cat-title,
+html.dark-theme .modern-exam-card:hover .modern-exam-title,
+html.dark-theme .modern-exam-card:hover .modern-exam-title a,
+html.dark-theme .modern-course-card:hover .modern-course-title,
+html.dark-theme .modern-course-card:hover .modern-course-title a,
+html.dark-theme .modern-blog-card:hover .modern-blog-title,
+html.dark-theme .modern-blog-card:hover .modern-blog-title a,
+html.dark-theme .rbt-default-card.style-three .inner .title a:hover,
+html.dark-theme .rbt-default-card .title a:hover,
+html.dark-theme .rbt-card-body .rbt-card-title a:hover,
+html.dark-theme .indviExamA:hover {
+    color: var(--primary) !important;
+}
+
+/* Card Meta, Footers & Divider Borders */
+html.dark-theme .modern-category-meta,
+html.dark-theme .modern-course-footer,
+html.dark-theme .modern-exam-meta,
+html.dark-theme .modern-course-meta,
+html.dark-theme .card-header,
+html.dark-theme .card-footer {
+    border-color: var(--border-color) !important;
+    background-color: transparent !important;
+}
+
+html.dark-theme .modern-exam-meta,
+html.dark-theme .modern-course-meta,
+html.dark-theme .modern-blog-desc,
+html.dark-theme .edu_cat_data .meta li {
+    color: var(--text-muted) !important;
+}
+
+/* Category Badges & Meta Chips */
+html.dark-theme .modern-category-badge,
+html.dark-theme .modern-cat-badge {
+    background: rgba(3, 198, 187, 0.18) !important;
+    color: #38bdf8 !important;
+}
+
+html.dark-theme .price-chip-free {
+    background: rgba(16, 185, 129, 0.2) !important;
+    color: #34d399 !important;
+}
+
+html.dark-theme .price-chip-paid {
+    background: rgba(99, 102, 241, 0.2) !important;
+    color: #a5b4fc !important;
+}
+
+/* Filter Navigation Pills (All Courses page) */
+html.dark-theme .filter-tab-pill {
+    background: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .filter-tab-pill.active,
+html.dark-theme .filter-tab-pill:hover {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(3, 198, 187, 0.35) !important;
+}
+
+/* Generic inline containers with white or off-white background */
+html.dark-theme *[style*="background: #ffffff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background: rgb(255, 255, 255)"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background-color: #ffffff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background:#ffffff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background-color:#ffffff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background: #fff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background-color: #fff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle),
+html.dark-theme *[style*="background:#fff"]:not(.btn):not(.rbt-btn):not(.theme-gradient):not(.badge):not(.rounded-circle) {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme *[style*="background: #f8fafc"]:not(.btn):not(.rbt-btn):not(.badge),
+html.dark-theme *[style*="background: rgb(248, 250, 252)"]:not(.btn):not(.rbt-btn):not(.badge),
+html.dark-theme *[style*="background-color: #f8fafc"]:not(.btn):not(.rbt-btn):not(.badge),
+html.dark-theme *[style*="background: #f1f5f9"]:not(.btn):not(.rbt-btn):not(.badge),
+html.dark-theme *[style*="background: rgb(241, 245, 249)"]:not(.btn):not(.rbt-btn):not(.badge),
+html.dark-theme *[style*="background-color: #f1f5f9"]:not(.btn):not(.rbt-btn):not(.badge) {
+    background-color: var(--bg-surface-elevated) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. Student Dashboard, Profile & Account Views
+   -------------------------------------------------------------------------- */
+html.dark-theme .student-dashboard-sidebar {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .student-nav-item {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .student-nav-item:hover,
+html.dark-theme .student-nav-item.active {
+    background-color: rgba(3, 198, 187, 0.15) !important;
+    color: var(--primary) !important;
+}
+
+html.dark-theme .student-kpi-card {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .student-kpi-val {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .student-kpi-label {
+    color: var(--text-muted) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. Exam Portal, Questions & Timer
+   -------------------------------------------------------------------------- */
+html.dark-theme .exam-portal-header {
+    background: #0f172a !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.dark-theme .exam-question-card,
+html.dark-theme .exam-card,
+html.dark-theme .exam-question-item {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .exam-question-text {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .exam-option-item {
+    background: transparent !important;
+}
+
+html.dark-theme .exam-option-label {
+    background: var(--bg-input) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .exam-option-item:hover .exam-option-label {
+    background: var(--bg-surface-elevated) !important;
+    border-color: var(--primary) !important;
+}
+
+html.dark-theme .exam-option-key {
+    background: #24344d !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .exam-option-item input[type="radio"]:checked + .exam-option-label {
+    background: rgba(3, 198, 187, 0.2) !important;
+    border-color: var(--primary) !important;
+    color: #38bdf8 !important;
+}
+
+html.dark-theme .exam-option-item input[type="radio"]:checked + .exam-option-label .exam-option-key {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+html.dark-theme .exam-result-card {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme #timerCount {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color);
+}
+
+/* --------------------------------------------------------------------------
+   8. Form Controls, Inputs & Select2
+   -------------------------------------------------------------------------- */
+html.dark-theme .form-control,
+html.dark-theme input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+html.dark-theme textarea,
+html.dark-theme select,
+html.dark-theme .form-select {
+    background-color: var(--bg-input) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .form-control:focus,
+html.dark-theme input:focus,
+html.dark-theme textarea:focus,
+html.dark-theme select:focus {
+    background-color: #17243c !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(3, 198, 187, 0.25) !important;
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .form-control::placeholder,
+html.dark-theme input::placeholder,
+html.dark-theme textarea::placeholder {
+    color: #64748b !important;
+}
+
+html.dark-theme .input-group-text {
+    background-color: var(--bg-surface-elevated) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-muted) !important;
+}
+
+/* Select2 in Dark Mode */
+html.dark-theme .select2-container--default .select2-selection--single {
+    background-color: var(--bg-input) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+    height: 44px;
+}
+
+html.dark-theme .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: var(--text-primary) !important;
+    line-height: 42px;
+}
+
+html.dark-theme .select2-dropdown {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark-theme .select2-results__option {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .select2-results__option--highlighted[aria-selected] {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* Summernote Editor in Dark Mode */
+html.dark-theme .note-editor.note-frame {
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .note-toolbar {
+    background-color: var(--bg-surface-elevated) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+html.dark-theme .note-editable {
+    background-color: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. Tables in Dark Mode
+   -------------------------------------------------------------------------- */
+html.dark-theme .table {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .table thead th {
+    background-color: #131c2e !important;
+    color: var(--text-primary) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+html.dark-theme .table td,
+html.dark-theme .table th {
+    border-color: var(--border-color) !important;
+    background-color: transparent;
+}
+
+html.dark-theme .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+html.dark-theme .table-hover tbody tr:hover {
+    background-color: rgba(3, 198, 187, 0.08) !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. Accordion, Modals, Tabs & Interactive Widgets
+   -------------------------------------------------------------------------- */
+html.dark-theme .accordion-item {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .accordion-button {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+html.dark-theme .accordion-button:not(.collapsed) {
+    background-color: var(--bg-surface-elevated) !important;
+    color: var(--primary) !important;
+}
+
+html.dark-theme .accordion-button::after {
+    filter: invert(1) brightness(1.5);
+}
+
+html.dark-theme .rbt-course-main-content li a {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .rbt-course-main-content li a:hover {
+    color: var(--primary) !important;
+    background-color: rgba(3, 198, 187, 0.08) !important;
+}
+
+/* Tabs */
+html.dark-theme .tab-button-style-2 li a.tab-button {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .tab-button-style-2 li a.tab-button.active {
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+html.dark-theme .nav-pills {
+    background-color: var(--bg-surface-elevated) !important;
+}
+
+html.dark-theme .nav-pills .nav-link {
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .nav-pills .nav-link.active {
+    background: var(--primary-gradient) !important;
+    color: #ffffff !important;
+}
+
+/* Modals */
+html.dark-theme .modal-content {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+}
+
+html.dark-theme .modal-header,
+html.dark-theme .modal-footer {
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .modal-title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .close,
+html.dark-theme .mod-close {
+    color: var(--text-muted) !important;
+    opacity: 0.8;
+}
+
+html.dark-theme .close:hover,
+html.dark-theme .mod-close:hover {
+    color: var(--text-primary) !important;
+    opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   11. Checkout & Shop Elements
+   -------------------------------------------------------------------------- */
+html.dark-theme .rbt-shop-area,
+html.dark-theme .rbt-single-product-area,
+html.dark-theme .rbt-product-description,
+html.dark-theme .rbt-related-product,
+html.dark-theme .checkout_area {
+    background-color: var(--bg-canvas) !important;
+}
+
+html.dark-theme .rbt-course-top-wrapper,
+html.dark-theme .rbt-page-banner-wrapper {
+    background-color: transparent !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .course-index {
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .rbt-badge-2 {
+    background: rgba(3, 198, 187, 0.15) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(3, 198, 187, 0.3) !important;
+}
+
+html.dark-theme .rbt-badge-4 {
+    background: rgba(245, 158, 11, 0.15) !important;
+    color: #fbbf24 !important;
+}
+
+html.dark-theme .rbt-badge-5 {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #a5b4fc !important;
+}
+
+/* Pagination */
+html.dark-theme .rbt-pagination li a {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .rbt-pagination li a:hover {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+html.dark-theme .rbt-pagination li span {
+    background-color: var(--bg-surface-elevated) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .rbt-pagination li.active span {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+/* Checkout */
+html.dark-theme .checkout-title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .checkout-content-wrapper {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+html.dark-theme .checkout-cart-total,
+html.dark-theme .checkout-payment-method {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .checkout-cart-total h4 {
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .checkout-cart-total ul li {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .single-method label {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .pro-qty input {
+    background: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* Course Details Sticky Bottom Bar & Nav */
+html.dark-theme .rbt-course-action-bottom {
+    background-color: var(--bg-surface) !important;
+    border-top: 1px solid var(--border-color) !important;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.dark-theme .rbt-course-action-bottom .title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .rbt-inner-onepage-navigation {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-theme .rbt-inner-onepage-navigation .mainmenu-nav .mainmenu li a {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .rbt-inner-onepage-navigation .mainmenu-nav .mainmenu li.current a,
+html.dark-theme .rbt-inner-onepage-navigation .mainmenu-nav .mainmenu li a:hover {
+    color: var(--primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   12. Buttons & Interactivity (Fixes Border-Gradient Buttons, White Buttons)
+   -------------------------------------------------------------------------- */
+/* Border Gradient Buttons (Browse All Examinations, Contact With Us, etc.) */
+html.dark-theme .rbt-btn.btn-border-gradient {
+    background: linear-gradient(90deg, #03c6bb 0%, #6366f1 100%) !important;
+    border: none !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45) !important;
+}
+
+html.dark-theme .rbt-btn.btn-border-gradient::before {
+    background: #0b1120 !important; /* Matches dark canvas */
+    transition: background 0.25s ease !important;
+}
+
+html.dark-theme .rbt-btn.btn-border-gradient,
+html.dark-theme .rbt-btn.btn-border-gradient .btn-text {
+    color: #ffffff !important;
+}
+
+html.dark-theme .rbt-btn.btn-border-gradient .btn-icon,
+html.dark-theme .rbt-btn.btn-border-gradient .btn-icon i {
+    color: #03c6bb !important;
+    transition: color 0.25s ease !important;
+}
+
+html.dark-theme .rbt-btn.btn-border-gradient:hover {
+    background: linear-gradient(90deg, #00b3a8 0%, #4f46e5 100%) !important;
+    box-shadow: 0 6px 24px rgba(3, 198, 187, 0.35) !important;
+}
+
+html.dark-theme .rbt-btn.btn-border-gradient:hover::before {
+    background: rgba(15, 23, 42, 0.6) !important;
+}
+
+html.dark-theme .rbt-btn.btn-border-gradient:hover .btn-text,
+html.dark-theme .rbt-btn.btn-border-gradient:hover .btn-icon i {
+    color: #38bdf8 !important;
+}
+
+/* White Buttons & Border Buttons */
+html.dark-theme .rbt-btn.btn-white {
+    background: var(--bg-surface-elevated) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+html.dark-theme .rbt-btn.btn-white:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-color: var(--primary) !important;
+}
+
+html.dark-theme .rbt-btn.btn-border {
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+    background: transparent !important;
+}
+
+html.dark-theme .rbt-btn.btn-border:hover {
+    border-color: var(--primary) !important;
+    background: rgba(3, 198, 187, 0.12) !important;
+    color: var(--primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   13. Gradients, Hero Banners & Section Overlays (Fixes Light Washed Backgrounds)
+   -------------------------------------------------------------------------- */
+html.dark-theme .bg-gradient-9,
+html.dark-theme .rbt-course-area.bg-gradient-9,
+html.dark-theme .rbt-course-area.bg-color-extra2,
+html.dark-theme .bg-color-extra2,
+html.dark-theme .bg-color-extra,
+html.dark-theme .bg-gradient-1,
+html.dark-theme .bg-gradient-2,
+html.dark-theme .bg-gradient-3,
+html.dark-theme .bg-gradient-4,
+html.dark-theme .bg-gradient-5,
+html.dark-theme .bg-gradient-6,
+html.dark-theme .bg-gradient-7,
+html.dark-theme .bg-gradient-8,
+html.dark-theme .bg-gradient-10,
+html.dark-theme .bg-gradient-11,
+html.dark-theme .bg-gradient-12,
+html.dark-theme .bg-gradient-13,
+html.dark-theme .bg-gradient-14 {
+    background: var(--bg-canvas) !important;
+}
+
+/* Remove White Overlay Gradients */
+html.dark-theme .bg-gradient-9::after,
+html.dark-theme .rbt-course-area.bg-gradient-9::after,
+html.dark-theme .rbt-page-banner-wrapper .rbt-banner-image::after,
+html.dark-theme .bg-gradient-1::after,
+html.dark-theme .bg-gradient-2::after,
+html.dark-theme .bg-gradient-4::after {
+    display: none !important;
+    background: none !important;
+    opacity: 0 !important;
+}
+
+/* Breadcrumb Areas */
+html.dark-theme .rbt-breadcrumb-default {
+    background: var(--bg-canvas) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+html.dark-theme .rbt-breadcrumb-default .title,
+html.dark-theme .rbt-breadcrumb-default .breadcrumb-inner .title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .rbt-breadcrumb-default .page-list li a {
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .rbt-breadcrumb-default .page-list li.active {
+    color: var(--primary) !important;
+}
+
+/* Section Subtitle Badges */
+html.dark-theme .subtitle.bg-secondary-opacity,
+html.dark-theme .subtitle.bg-primary-opacity,
+html.dark-theme .rbt-badge.bg-secondary-opacity,
+html.dark-theme .rbt-badge.bg-primary-opacity {
+    background: rgba(3, 198, 187, 0.15) !important;
+    color: #38bdf8 !important;
+    border: 1px solid rgba(3, 198, 187, 0.3) !important;
+}
+
+/* Filter Tab Buttons in Course Area */
+html.dark-theme .filter-tab-button button {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .filter-tab-button button.active,
+html.dark-theme .filter-tab-button button:hover {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+html.dark-theme .filter-tab-button button .course-number {
+    background: rgba(3, 198, 187, 0.2) !important;
+    color: #38bdf8 !important;
+}
+
+html.dark-theme .filter-tab-button button.active .course-number {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+}
+
+/* Advance Tab Buttons (About Us on Home) */
+html.dark-theme .advance-tab-button-1 .tab-button-list .tab-button::before {
+    background: var(--bg-surface) !important;
+}
+
+html.dark-theme .advance-tab-button-1 .tab-button-list .tab-button::after {
+    border-left-color: var(--bg-surface) !important;
+}
+
+html.dark-theme .advance-tab-button-1 .tab-button-list .tab-button .title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .advance-tab-button-1 .tab-button-list .tab-button.active .title {
+    color: var(--primary) !important;
+}
+
+/* Testimonials */
+html.dark-theme .rbt-testimonial-box .inner {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+html.dark-theme .rbt-testimonial-box .client-info .title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .rbt-testimonial-box .client-info span {
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .rbt-testimonial-box .description .subtitle-3 {
+    color: var(--text-secondary) !important;
+}
+
+/* Pricing Table on Home */
+html.dark-theme .pricing-table {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+html.dark-theme .pricing-table .pricing-header .title {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .pricing-table .pricing-body {
+    background-color: transparent !important;
+}
+
+html.dark-theme .pricing-billing-duration ul {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+html.dark-theme .pricing-billing-duration ul li button {
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme .pricing-billing-duration ul li button.active {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   14. Footers
+   -------------------------------------------------------------------------- */
+html.dark-theme footer,
+html.dark-theme .footer,
+html.dark-theme .footer-bottom,
+html.dark-theme .skin-dark-footer {
+    background-color: #070c18 !important;
+    border-top: 1px solid var(--border-color) !important;
+    color: var(--text-muted) !important;
+}
+
+html.dark-theme footer a,
+html.dark-theme .footer-bottom a {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme footer a:hover,
+html.dark-theme .footer-bottom a:hover {
+    color: var(--primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   13. Scrollbar & Dividers
+   -------------------------------------------------------------------------- */
+html.dark-theme hr,
+html.dark-theme .rbt-separator,
+html.dark-theme .border-bottom,
+html.dark-theme .border-top {
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+html.dark-theme ::-webkit-scrollbar-track {
+    background: #0b1120;
+}
+
+html.dark-theme ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 5px;
+}
+
+html.dark-theme ::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* ==========================================================================
+   14. THEME TOGGLE BUTTON STYLING (Modern Tactile Switch)
+   ========================================================================== */
+.theme-toggle-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    background: rgba(15, 23, 42, 0.05);
+    border: 1px solid rgba(15, 23, 42, 0.12);
+    color: #475569;
+    outline: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 10;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(3, 198, 187, 0.12);
+    border-color: #03c6bb;
+    color: #009e95;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(3, 198, 187, 0.25);
+}
+
+.theme-toggle-btn:active {
+    transform: translateY(0) scale(0.96);
+}
+
+/* In Dark Mode */
+html.dark-theme .theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #f8fafc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-theme .theme-toggle-btn:hover {
+    background: rgba(3, 198, 187, 0.2);
+    border-color: #03c6bb;
+    color: #38bdf8;
+    box-shadow: 0 0 18px rgba(3, 198, 187, 0.35);
+}
+
+/* Icon Switching & Micro-animations */
+.theme-toggle-icon-wrap {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+/* Light mode state: Moon icon visible, Sun icon hidden */
+.theme-icon-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.4);
+    color: #fbbf24;
+}
+
+.theme-icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    color: #475569;
+}
+
+/* Dark mode state: Sun icon visible, Moon icon hidden */
+html.dark-theme .theme-icon-sun {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+    color: #f59e0b;
+    filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.5));
+}
+
+html.dark-theme .theme-icon-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.4);
+}
+
+/* Nav Item Placement for frontend11 header */
+.nav-menu-social .theme-toggle-nav-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 12px;
+}
+
+/* Mobile Header placement for frontend11 */
+.nav-header-actions {
+    position: absolute;
+    right: 55px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    align-items: center;
+    gap: 8px;
+    z-index: 100;
+}
+
+@media only screen and (max-width: 991px) {
+    .nav-header-actions {
+        display: flex;
+    }
+    
+    .nav-menu-social .theme-toggle-nav-item {
+        display: flex;
+        padding: 10px 15px;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .nav-menu-social .theme-toggle-nav-item .theme-toggle-label {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+}
+
+/* Quick access in Histudy inc header */
+.quick-access .theme-toggle-quick-item {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 4px;
+}
