@@ -139,8 +139,8 @@
                     <li class=""><a href="{{ route('/') }}">Home</span></a></li>
                     <li><a href="{{ route('course') }}">Courses<span class="submenu-indicator"></span></a>
 
-                    <li><a href="{{ route('all.courses') }}">Examination<span class="submenu-indicator"></span></a>
-                        {{-- <ul class="nav-dropdown nav-submenu">
+                    <li><a href="{{ route('all.courses') }}">Examination<span class="submenu-indicator"></span></a></li>
+                    <li><a href="{{ route('practice_quiz.index') }}">Quiz Preparation <span class="badge bg-warning text-dark ml-1" style="font-size: 10px; border-radius: 10px; padding: 2px 6px;">GAME</span></a></li>
                             @foreach ($catgories as $category)
                                 @php
                                     $exams = DB::table('exams')

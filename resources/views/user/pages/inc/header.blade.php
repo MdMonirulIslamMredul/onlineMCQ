@@ -154,6 +154,13 @@
                                 <a href="{{ route('all.courses') }}">Examination
                                     {{-- <i class="feather-chevron-down"></i> --}}
                                 </a>
+                            </li>
+
+                            <li class="has-menu-child-item">
+                                <a href="{{ route('practice_quiz.index') }}">
+                                    Quiz Preparation <span class="badge bg-warning text-dark ms-1" style="font-size: 10px; border-radius: 12px; padding: 2px 7px; font-weight: 800;">GAME</span>
+                                </a>
+                            </li>
                                 {{-- <ul class="submenu">
                                     @foreach($catgories as $category)
                                     @php
@@ -570,6 +577,9 @@
                 </li>
                 <li class="">
                     <a href="{{ route('all.courses') }}">Examination </a>
+                </li>
+                <li class="">
+                    <a href="{{ route('practice_quiz.index') }}">Quiz Preparation <span class="badge bg-warning text-dark ms-1" style="font-size: 10px; border-radius: 10px; padding: 2px 6px;">GAME</span></a>
                 </li>
                 {{-- <li class="has-dropdown has-menu-child-item">
                     <a href="{{ route('all.courses') }}" class="">Examination
