@@ -314,7 +314,7 @@ $completedPracticeQuizzes = \App\Models\PracticeSession::where('user_id', option
                                                 @endif
                                             </td>
                                             <td class="text-end">
-                                                <a href="{{ route('practice_quiz.play', $stSession->id) }}" class="rbt-btn btn-xs btn-gradient radius-round">
+                                                <a href="{{ $stSession->status === 'completed' ? route('practice_quiz.start', ['id' => $stSession->practice_quiz_id, 'restart' => 1]) : route('practice_quiz.play', $stSession->id) }}" class="rbt-btn btn-xs btn-gradient radius-round">
                                                     {{ $stSession->status === 'completed' ? 'Practice Again' : 'Continue' }}
                                                 </a>
                                             </td>

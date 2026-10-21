@@ -110,7 +110,7 @@
                             <div class="alert alert-success py-2 px-3 small rounded-3 mb-3">
                                 <i class="feather-check-circle"></i> You have already mastered this quiz!
                             </div>
-                            <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-primary rounded-pill w-100 py-3 mb-2 font-weight-bold">
+                            <a href="{{ route('practice_quiz.start', ['id' => $quiz->id, 'restart' => 1]) }}" class="btn btn-primary rounded-pill w-100 py-3 mb-2 font-weight-bold">
                                 <i class="feather-rotate-ccw"></i> Practice Again
                             </a>
                             <a href="{{ route('practice_quiz.review', $userSession->id) }}" class="btn btn-outline-light rounded-pill w-100 py-2 small">

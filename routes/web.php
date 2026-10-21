@@ -201,7 +201,7 @@ Route::group(['middleware'=>'user_auth'], function() {
     Route::get('/practice-quiz/play/{id}', [PracticeQuizController::class, 'play'])->name('practice_quiz.play');
     Route::get('/api/practice-quiz/next/{id}', [PracticeQuizController::class, 'apiGetNextQuestion'])->name('practice_quiz.api.next');
     Route::post('/api/practice-quiz/submit/{id}', [PracticeQuizController::class, 'apiSubmitAnswer'])->name('practice_quiz.api.submit');
-    Route::post('/practice-quiz/restart/{id}', [PracticeQuizController::class, 'restartSession'])->name('practice_quiz.restart');
+    Route::match(['get', 'post'], '/practice-quiz/restart/{id}', [PracticeQuizController::class, 'restartSession'])->name('practice_quiz.restart');
     Route::get('/practice-quiz/review/{id}', [PracticeQuizController::class, 'review'])->name('practice_quiz.review');
 });
 

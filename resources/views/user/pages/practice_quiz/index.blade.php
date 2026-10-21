@@ -226,7 +226,7 @@
                         <div class="mt-auto">
                             @if($isCompleted)
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-primary rounded-pill flex-grow-1 d-flex align-items-center justify-content-center gap-2" style="font-weight: 700;">
+                                    <a href="{{ route('practice_quiz.start', ['id' => $quiz->id, 'restart' => 1]) }}" class="btn btn-primary rounded-pill flex-grow-1 d-flex align-items-center justify-content-center gap-2" style="font-weight: 700;">
                                         <i class="feather-play-circle"></i> Practice Again
                                     </a>
                                     <a href="{{ route('practice_quiz.review', $session->id) }}" class="btn btn-outline-secondary rounded-pill px-3" title="Review Explanations">

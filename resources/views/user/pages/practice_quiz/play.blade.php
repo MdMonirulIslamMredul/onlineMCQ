@@ -425,17 +425,14 @@
                         </div>
 
                         <div class="d-flex flex-wrap gap-3 justify-content-center">
-                            <form action="{{ route('practice_quiz.restart', $session->id) }}" method="POST" onsubmit="return confirm('Restart quiz from beginning? Your mastery progress will reset.');">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-primary rounded-pill px-4 py-3 font-weight-bold">
-                                    <i class="feather-rotate-ccw"></i> Practice Again
-                                </button>
-                            </form>
-                            <a href="{{ route('practice_quiz.review', $session->id) }}" class="btn btn-secondary rounded-pill px-4 py-3 font-weight-bold">
-                                <i class="feather-book-open"></i> Review Explanations
+                            <button type="button" id="practiceAgainBtn" class="btn btn-outline-primary rounded-pill px-4 py-3 font-weight-bold d-inline-flex align-items-center gap-2">
+                                <i class="feather-rotate-ccw"></i> <span>Practice Again</span>
+                            </button>
+                            <a href="{{ route('practice_quiz.review', $session->id) }}" class="btn btn-secondary rounded-pill px-4 py-3 font-weight-bold d-inline-flex align-items-center gap-2">
+                                <i class="feather-book-open"></i> <span>Review Explanations</span>
                             </a>
-                            <a href="{{ route('user.myaccount.dashboard') }}" class="btn btn-primary rounded-pill px-5 py-3 font-weight-bold">
-                                <i class="feather-grid"></i> Dashboard
+                            <a href="{{ route('user.myaccount.dashboard') }}" class="btn btn-primary rounded-pill px-5 py-3 font-weight-bold d-inline-flex align-items-center gap-2">
+                                <i class="feather-grid"></i> <span>Dashboard</span>
                             </a>
                         </div>
                     </div>
@@ -452,7 +449,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const sessionId = {{ $session->id }};
     const targetRepetitions = {{ $session->quiz->target_repetitions }};
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '{{ csrf_token() }}';
 
     let currentQuestion = null;
     let currentStreak = 0;
@@ -761,6 +758,57 @@ document.addEventListener('DOMContentLoaded', function () {
                 confetti({ particleCount: 60, angle: 120, spread: 55, origin: { x: 1 } });
             }, 400);
         }
+    }
+
+    // Handle Practice Again button
+    const practiceAgainBtn = document.getElementById('practiceAgainBtn');
+    if (practiceAgainBtn) {
+        practiceAgainBtn.addEventListener('click', function () {
+            const btn = this;
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Restarting...';
+
+            fetch(`/practice-quiz/restart/${sessionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                return res.json();
+            })
+            .then(data => {
+                // Hide victory state
+                victoryState.style.display = 'none';
+                feedbackPanel.style.display = 'none';
+
+                // Reset local metrics
+                currentStreak = 0;
+                streakCount.textContent = '0';
+                updateRepetitionDots(0);
+                updateSessionProgress({
+                    mastered_questions: 0,
+                    total_questions: {{ $session->total_questions }},
+                    progress_percent: 0
+                });
+
+                // Load first question
+                loadNextQuestion();
+            })
+            .catch(err => {
+                console.error('AJAX restart error, falling back:', err);
+                window.location.href = "{{ route('practice_quiz.restart', $session->id) }}";
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+            });
+        });
     }
 
     // Initial Load

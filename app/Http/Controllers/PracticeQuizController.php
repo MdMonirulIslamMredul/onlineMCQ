@@ -96,7 +96,7 @@ class PracticeQuizController extends Controller
     /**
      * Start or resume a practice session.
      */
-    public function start($id)
+    public function start(Request $request, $id)
     {
         $userId = $this->getStudentId();
         if (!$userId) {
@@ -120,6 +120,23 @@ class PracticeQuizController extends Controller
                 'status' => 'in_progress',
             ]
         );
+
+        // If session was already completed or restart explicitly requested, reset progress for a fresh practice!
+        if ($session->status === 'completed' || $request->has('restart')) {
+            PracticeSessionQuestion::where('session_id', $session->id)->update([
+                'correct_count' => 0,
+                'incorrect_count' => 0,
+                'is_mastered' => false,
+                'last_answered_at' => null,
+            ]);
+
+            $session->mastered_questions = 0;
+            $session->total_attempts = 0;
+            $session->correct_attempts = 0;
+            $session->status = 'in_progress';
+            $session->completed_at = null;
+            $session->save();
+        }
 
         // Update total questions count in case questions were added/removed
         if ($session->total_questions !== $quiz->questions_count) {
@@ -163,9 +180,19 @@ class PracticeQuizController extends Controller
         }
 
         $session = PracticeSession::where('id', $sessionId)
-            ->where('user_id', $userId)
             ->with('quiz.category')
             ->firstOrFail();
+
+        // If this session belongs to another user, redirect to current user's session
+        if ($session->user_id !== $userId) {
+            $userSession = PracticeSession::where('practice_quiz_id', $session->practice_quiz_id)
+                ->where('user_id', $userId)
+                ->first();
+            if ($userSession) {
+                return redirect()->route('practice_quiz.play', $userSession->id);
+            }
+            return redirect()->route('practice_quiz.start', $session->practice_quiz_id);
+        }
 
         return view('user.pages.practice_quiz.play', compact('session'));
     }
@@ -181,9 +208,15 @@ class PracticeQuizController extends Controller
         }
 
         $session = PracticeSession::where('id', $sessionId)
-            ->where('user_id', $userId)
             ->with('quiz')
             ->firstOrFail();
+
+        if ($session->user_id !== $userId) {
+            $session = PracticeSession::where('practice_quiz_id', $session->practice_quiz_id)
+                ->where('user_id', $userId)
+                ->with('quiz')
+                ->firstOrFail();
+        }
 
         // Check unmastered questions
         $unmasteredQuestions = PracticeSessionQuestion::where('session_id', $session->id)
@@ -265,9 +298,15 @@ class PracticeQuizController extends Controller
         ]);
 
         $session = PracticeSession::where('id', $sessionId)
-            ->where('user_id', $userId)
             ->with('quiz')
             ->firstOrFail();
+
+        if ($session->user_id !== $userId) {
+            $session = PracticeSession::where('practice_quiz_id', $session->practice_quiz_id)
+                ->where('user_id', $userId)
+                ->with('quiz')
+                ->firstOrFail();
+        }
 
         $question = PracticeQuestion::where('id', $request->question_id)
             ->where('practice_quiz_id', $session->practice_quiz_id)
@@ -331,16 +370,29 @@ class PracticeQuizController extends Controller
     /**
      * Restart / Reset a practice quiz session.
      */
-    public function restartSession($sessionId)
+    public function restartSession(Request $request, $sessionId)
     {
         $userId = $this->getStudentId();
         if (!$userId) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
             return redirect()->route('user.login_or_signup');
         }
 
-        $session = PracticeSession::where('id', $sessionId)
-            ->where('user_id', $userId)
-            ->firstOrFail();
+        $session = PracticeSession::where('id', $sessionId)->firstOrFail();
+
+        // Ensure session belongs to current user or find/create current user's session
+        if ($session->user_id !== $userId) {
+            $userSession = PracticeSession::where('practice_quiz_id', $session->practice_quiz_id)
+                ->where('user_id', $userId)
+                ->first();
+            if ($userSession) {
+                $session = $userSession;
+            } else {
+                return redirect()->route('practice_quiz.start', ['id' => $session->practice_quiz_id, 'restart' => 1]);
+            }
+        }
 
         // Reset all question progress
         PracticeSessionQuestion::where('session_id', $session->id)->update([
@@ -357,6 +409,14 @@ class PracticeQuizController extends Controller
         $session->status = 'in_progress';
         $session->completed_at = null;
         $session->save();
+
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Quiz progress reset! Good luck on your practice.',
+                'session_id' => $session->id,
+            ]);
+        }
 
         return redirect()->route('practice_quiz.play', $session->id)
             ->with('status', 'Quiz progress reset! Good luck on your practice.');
