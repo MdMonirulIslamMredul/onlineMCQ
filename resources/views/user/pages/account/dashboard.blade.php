@@ -279,8 +279,9 @@ $completedPracticeQuizzes = \App\Models\PracticeSession::where('user_id', option
                                     <tr>
                                         <th>Quiz Title</th>
                                         <th>Mastery Progress</th>
-                                        <th>Attempts</th>
+                                        <th>Accuracy & Attempts</th>
                                         <th>Status</th>
+                                        <th>Date</th>
                                         <th class="text-end">Action</th>
                                     </tr>
                                 </thead>
@@ -300,7 +301,10 @@ $completedPracticeQuizzes = \App\Models\PracticeSession::where('user_id', option
                                                 </div>
                                             </td>
                                             <td>
-                                                <span class="badge bg-light text-dark">{{ $stSession->total_attempts }} attempts</span>
+                                                <span class="badge bg-light text-dark font-weight-bold">
+                                                    {{ $stSession->accuracy_percent }}%
+                                                </span>
+                                                <span class="text-muted small ms-1">({{ $stSession->total_attempts }} attempts)</span>
                                             </td>
                                             <td>
                                                 @if($stSession->status === 'completed')
@@ -313,10 +317,24 @@ $completedPracticeQuizzes = \App\Models\PracticeSession::where('user_id', option
                                                     </span>
                                                 @endif
                                             </td>
+                                            <td class="text-muted small">
+                                                {{ $stSession->completed_at ? $stSession->completed_at->format('M d, Y') : $stSession->updated_at->format('M d, Y') }}
+                                            </td>
                                             <td class="text-end">
-                                                <a href="{{ $stSession->status === 'completed' ? route('practice_quiz.start', ['id' => $stSession->practice_quiz_id, 'restart' => 1]) : route('practice_quiz.play', $stSession->id) }}" class="rbt-btn btn-xs btn-gradient radius-round">
-                                                    {{ $stSession->status === 'completed' ? 'Practice Again' : 'Continue' }}
-                                                </a>
+                                                <div class="d-inline-flex gap-1">
+                                                    @if($stSession->status === 'completed')
+                                                        <a href="{{ route('practice_quiz.start', ['id' => $stSession->practice_quiz_id, 'restart' => 1]) }}" class="rbt-btn btn-xs btn-gradient radius-round" title="Practice this quiz again">
+                                                            Practice Again
+                                                        </a>
+                                                        <a href="{{ route('practice_quiz.review', $stSession->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-1" title="Review Explanations">
+                                                            <i class="feather-book-open"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ route('practice_quiz.play', $stSession->id) }}" class="rbt-btn btn-xs btn-gradient radius-round">
+                                                            Continue
+                                                        </a>
+                                                    @endif
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

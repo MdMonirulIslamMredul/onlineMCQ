@@ -121,6 +121,25 @@
                                 <i class="feather-play"></i> Resume Practice Now
                             </a>
                         @endif
+
+                        @if(isset($pastCompletedSessions) && $pastCompletedSessions->isNotEmpty() && $userSession->status !== 'completed')
+                            <div class="mt-3 pt-3 border-top" style="border-color: rgba(255,255,255,0.15) !important;">
+                                <div class="small font-weight-bold text-white mb-2 d-flex align-items-center gap-1">
+                                    <i class="feather-award text-warning"></i> Last Completed Result:
+                                </div>
+                                @php $lastCompleted = $pastCompletedSessions->first(); @endphp
+                                <div class="p-2 rounded-3" style="background: rgba(255,255,255,0.08); font-size: 13px;">
+                                    <div class="d-flex justify-content-between text-white font-weight-bold">
+                                        <span class="text-success"><i class="feather-check-circle"></i> 100% Mastered</span>
+                                        <span class="text-warning">{{ $lastCompleted->accuracy_percent }}% Accuracy</span>
+                                    </div>
+                                    <div class="text-muted small mt-1 d-flex justify-content-between">
+                                        <span>{{ $lastCompleted->total_attempts }} total attempts</span>
+                                        <span>{{ $lastCompleted->completed_at ? $lastCompleted->completed_at->format('M d, Y') : '' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     @else
                         <h5 class="text-white mb-2">Ready to Prepare?</h5>
                         <p class="text-muted small mb-4">No time pressure or negative marks. Learn through repetition until 100% mastered.</p>

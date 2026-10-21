@@ -14,6 +14,11 @@ $attendExams = DB::table('results')
     ->latest()
     ->get();
 
+$practiceSessions = \App\Models\PracticeSession::where('user_id', optional($userQ)->id)
+    ->with('quiz')
+    ->orderBy('updated_at', 'desc')
+    ->get();
+
 $courseOrders = DB::table('courses_order')
     ->where('phone', optional($userQ)->phone)
     ->orWhere('email', optional($userQ)->email)
@@ -84,7 +89,7 @@ $courses = DB::table('courses')
                             <i class="feather-book-open"></i> Enrolled Courses ({{ $courses->count() }})
                         </a>
                         <a href="{{ route('user.myaccount.exam') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none" style="background: rgba(3, 198, 187, 0.1); color: #009e95; font-weight: 700;">
-                            <i class="feather-check-square"></i> My Quiz Attempts ({{ $attendExams->count() }})
+                            <i class="feather-check-square"></i> My Quiz Attempts ({{ $attendExams->count() + $practiceSessions->count() }})
                         </a>
                         <a href="{{ route('user.myaccount.profile') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none text-muted" style="transition: all 0.2s;">
                             <i class="feather-user"></i> My Profile
@@ -174,21 +179,105 @@ $courses = DB::table('courses')
                         </table>
                     </div>
                 @else
-                    <!-- Empty State -->
-                    <div class="text-center py-5 px-4 rounded-4" style="background: #f8fafc; border: 2px dashed #e2e8f0;">
-                        <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 72px; height: 72px; background: rgba(3, 198, 187, 0.1); color: #03c6bb; font-size: 32px;">
-                            <i class="feather-help-circle"></i>
-                        </div>
-                        <h4 style="font-weight: 700; color: #0f172a;" class="mb-2">No Exam Attempts Yet</h4>
-                        <p class="text-muted mb-4" style="max-width: 420px; margin: 0 auto; font-size: 14px;">
-                            You have not participated in any mock tests or quiz exams. Take your first live timed exam now to evaluate your skills!
+                    <!-- Empty State for Live Mock Tests if none -->
+                    <div class="text-center py-4 px-4 rounded-4 mb-4" style="background: #f8fafc; border: 2px dashed #e2e8f0;">
+                        <h5 style="font-weight: 700; color: #0f172a;" class="mb-1">No Timed Mock Exams Yet</h5>
+                        <p class="text-muted mb-3" style="max-width: 420px; margin: 0 auto; font-size: 13px;">
+                            You haven't participated in live timed mock tests yet.
                         </p>
-                        <a href="{{ route('/') }}#exam-categories" class="rbt-btn btn-gradient radius-round">
-                            <span class="btn-text">Select an Exam Category</span>
-                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                        <a href="{{ route('/') }}#exam-categories" class="rbt-btn btn-xs btn-gradient radius-round">
+                            Explore Exam Categories
                         </a>
                     </div>
                 @endif
+
+                <!-- Preparation / Active Recall Practice History -->
+                <div class="mt-5">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h3 class="mb-1" style="font-weight: 800; color: #0f172a; font-size: 22px;">
+                                <i class="feather-zap me-2" style="color: #f59e0b;"></i> Preparation Quiz Attempts
+                            </h3>
+                            <p class="text-muted mb-0" style="font-size: 14px;">Your active spaced-repetition practice sessions, accuracy rates, and mastery progress.</p>
+                        </div>
+                        <span class="badge px-3 py-2 rounded-pill" style="background: rgba(245, 158, 11, 0.1); color: #d97706; font-weight: 700;">
+                            {{ $practiceSessions->count() }} Sessions
+                        </span>
+                    </div>
+
+                    @if($practiceSessions->count() > 0)
+                        <div class="table-responsive rounded-4 shadow-sm" style="border: 1px solid #e2e8f0; background: #ffffff;">
+                            <table class="table align-middle mb-0" style="font-size: 14px;">
+                                <thead style="background: #f8fafc; border-bottom: 2px solid #e2e8f0;">
+                                    <tr>
+                                        <th class="py-3 px-4" style="font-weight: 700; color: #475569;">Quiz Title</th>
+                                        <th class="py-3 px-3" style="font-weight: 700; color: #475569;">Mastery</th>
+                                        <th class="py-3 px-3" style="font-weight: 700; color: #475569;">Accuracy & Attempts</th>
+                                        <th class="py-3 px-3" style="font-weight: 700; color: #475569;">Date & Time</th>
+                                        <th class="py-3 px-4 text-end" style="font-weight: 700; color: #475569;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($practiceSessions as $ps)
+                                        @php
+                                            $psDate = $ps->completed_at ?: $ps->updated_at;
+                                        @endphp
+                                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                                            <td class="py-3 px-4">
+                                                <div style="font-weight: 700; color: #0f172a; font-size: 15px;">{{ $ps->quiz->title ?? 'Practice Quiz' }}</div>
+                                                <div class="text-muted" style="font-size: 12px;">Session #{{ $ps->id }}</div>
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                @if($ps->status === 'completed')
+                                                    <span class="badge px-2 py-1 rounded-pill" style="background: rgba(16, 185, 129, 0.12); color: #059669; font-weight: 700; font-size: 11px;">
+                                                        <i class="feather-check-circle me-1"></i> 100% Mastered
+                                                    </span>
+                                                @else
+                                                    <span class="badge px-2 py-1 rounded-pill" style="background: rgba(245, 158, 11, 0.12); color: #d97706; font-weight: 700; font-size: 11px;">
+                                                        <i class="feather-clock me-1"></i> In Progress ({{ $ps->progress_percent }}%)
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="py-3 px-3">
+                                                <span class="badge px-3 py-1 rounded-pill" style="background: #f1f5f9; color: #0f172a; font-weight: 800; font-size: 13px;">
+                                                    {{ $ps->accuracy_percent }}% Accuracy
+                                                </span>
+                                                <span class="text-muted small ms-1">({{ $ps->total_attempts }} attempts)</span>
+                                            </td>
+                                            <td class="py-3 px-3 text-muted" style="font-size: 13px;">
+                                                <div>{{ $psDate ? $psDate->format('M d, Y') : '-' }}</div>
+                                                <div style="font-size: 11px;">{{ $psDate ? $psDate->format('h:i A') : '' }}</div>
+                                            </td>
+                                            <td class="py-3 px-4 text-end">
+                                                <div class="d-inline-flex gap-1 justify-content-end">
+                                                    @if($ps->status === 'completed')
+                                                        <a href="{{ route('practice_quiz.start', ['id' => $ps->practice_quiz_id, 'restart' => 1]) }}" class="rbt-btn btn-xs btn-gradient radius-round">
+                                                            Practice Again
+                                                        </a>
+                                                        <a href="{{ route('practice_quiz.review', $ps->id) }}" class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-1" title="Review Explanations">
+                                                            <i class="feather-book-open"></i>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ route('practice_quiz.play', $ps->id) }}" class="rbt-btn btn-xs btn-gradient radius-round">
+                                                            Resume
+                                                        </a>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="text-center py-4 px-4 rounded-4" style="background: #f8fafc; border: 1px dashed #e2e8f0;">
+                            <p class="text-muted mb-2" style="font-size: 14px;">No active recall practice sessions started yet.</p>
+                            <a href="{{ route('practice_quiz.index') }}" class="rbt-btn btn-xs btn-gradient radius-round">
+                                Browse Practice Quizzes
+                            </a>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

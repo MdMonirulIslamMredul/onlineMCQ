@@ -83,14 +83,23 @@ class PracticeQuizController extends Controller
 
         $userId = $this->getStudentId();
         $userSession = null;
+        $pastCompletedSessions = collect();
 
         if ($userId) {
             $userSession = PracticeSession::where('user_id', $userId)
                 ->where('practice_quiz_id', $quiz->id)
+                ->orderByRaw("CASE WHEN status = 'in_progress' THEN 1 ELSE 2 END")
+                ->latest()
                 ->first();
+
+            $pastCompletedSessions = PracticeSession::where('user_id', $userId)
+                ->where('practice_quiz_id', $quiz->id)
+                ->where('status', 'completed')
+                ->latest('completed_at')
+                ->get();
         }
 
-        return view('user.pages.practice_quiz.show', compact('quiz', 'userSession'));
+        return view('user.pages.practice_quiz.show', compact('quiz', 'userSession', 'pastCompletedSessions'));
     }
 
     /**
@@ -109,50 +118,35 @@ class PracticeQuizController extends Controller
             return back()->with('error', 'This quiz does not have any questions yet. Please try another one.');
         }
 
-        // Find or create session
-        $session = PracticeSession::firstOrCreate(
-            ['user_id' => $userId, 'practice_quiz_id' => $quiz->id],
-            [
+        $restartRequested = $request->has('restart');
+
+        // Look for an existing in-progress session if not explicitly restarting
+        $session = null;
+        if (!$restartRequested) {
+            $session = PracticeSession::where('user_id', $userId)
+                ->where('practice_quiz_id', $quiz->id)
+                ->where('status', 'in_progress')
+                ->latest()
+                ->first();
+        }
+
+        // If no in-progress session or restart was requested, create a brand NEW session (preserving history!)
+        if (!$session) {
+            $session = PracticeSession::create([
+                'user_id' => $userId,
+                'practice_quiz_id' => $quiz->id,
                 'total_questions' => $quiz->questions_count,
                 'mastered_questions' => 0,
                 'total_attempts' => 0,
                 'correct_attempts' => 0,
                 'status' => 'in_progress',
-            ]
-        );
-
-        // If session was already completed or restart explicitly requested, reset progress for a fresh practice!
-        if ($session->status === 'completed' || $request->has('restart')) {
-            PracticeSessionQuestion::where('session_id', $session->id)->update([
-                'correct_count' => 0,
-                'incorrect_count' => 0,
-                'is_mastered' => false,
-                'last_answered_at' => null,
             ]);
 
-            $session->mastered_questions = 0;
-            $session->total_attempts = 0;
-            $session->correct_attempts = 0;
-            $session->status = 'in_progress';
-            $session->completed_at = null;
-            $session->save();
-        }
-
-        // Update total questions count in case questions were added/removed
-        if ($session->total_questions !== $quiz->questions_count) {
-            $session->total_questions = $quiz->questions_count;
-            $session->save();
-        }
-
-        // Initialize question rows for session if not already existing
-        $existingQIds = PracticeSessionQuestion::where('session_id', $session->id)->pluck('question_id')->toArray();
-        $allQuizQIds = PracticeQuestion::where('practice_quiz_id', $quiz->id)->pluck('id')->toArray();
-
-        $missingQIds = array_diff($allQuizQIds, $existingQIds);
-        if (!empty($missingQIds)) {
+            // Seed question rows for this session
+            $allQuizQIds = PracticeQuestion::where('practice_quiz_id', $quiz->id)->pluck('id')->toArray();
             $insertBatch = [];
             $now = Carbon::now();
-            foreach ($missingQIds as $qId) {
+            foreach ($allQuizQIds as $qId) {
                 $insertBatch[] = [
                     'session_id' => $session->id,
                     'question_id' => $qId,
@@ -163,7 +157,36 @@ class PracticeQuizController extends Controller
                     'updated_at' => $now,
                 ];
             }
-            PracticeSessionQuestion::insert($insertBatch);
+            if (!empty($insertBatch)) {
+                PracticeSessionQuestion::insert($insertBatch);
+            }
+        } else {
+            // Sync question count if quiz was updated
+            if ($session->total_questions !== $quiz->questions_count) {
+                $session->total_questions = $quiz->questions_count;
+                $session->save();
+            }
+
+            // Sync any missing questions
+            $existingQIds = PracticeSessionQuestion::where('session_id', $session->id)->pluck('question_id')->toArray();
+            $allQuizQIds = PracticeQuestion::where('practice_quiz_id', $quiz->id)->pluck('id')->toArray();
+            $missingQIds = array_diff($allQuizQIds, $existingQIds);
+            if (!empty($missingQIds)) {
+                $insertBatch = [];
+                $now = Carbon::now();
+                foreach ($missingQIds as $qId) {
+                    $insertBatch[] = [
+                        'session_id' => $session->id,
+                        'question_id' => $qId,
+                        'correct_count' => 0,
+                        'incorrect_count' => 0,
+                        'is_mastered' => false,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
+                }
+                PracticeSessionQuestion::insert($insertBatch);
+            }
         }
 
         return redirect()->route('practice_quiz.play', $session->id);
@@ -368,7 +391,7 @@ class PracticeQuizController extends Controller
     }
 
     /**
-     * Restart / Reset a practice quiz session.
+     * Restart / Reset a practice quiz session by starting a new attempt.
      */
     public function restartSession(Request $request, $sessionId)
     {
@@ -381,45 +404,48 @@ class PracticeQuizController extends Controller
         }
 
         $session = PracticeSession::where('id', $sessionId)->firstOrFail();
+        $quiz = PracticeQuiz::withCount('questions')->findOrFail($session->practice_quiz_id);
 
-        // Ensure session belongs to current user or find/create current user's session
-        if ($session->user_id !== $userId) {
-            $userSession = PracticeSession::where('practice_quiz_id', $session->practice_quiz_id)
-                ->where('user_id', $userId)
-                ->first();
-            if ($userSession) {
-                $session = $userSession;
-            } else {
-                return redirect()->route('practice_quiz.start', ['id' => $session->practice_quiz_id, 'restart' => 1]);
-            }
-        }
-
-        // Reset all question progress
-        PracticeSessionQuestion::where('session_id', $session->id)->update([
-            'correct_count' => 0,
-            'incorrect_count' => 0,
-            'is_mastered' => false,
-            'last_answered_at' => null,
+        // CREATE A NEW PRACTICE SESSION to preserve previous session history!
+        $newSession = PracticeSession::create([
+            'user_id' => $userId,
+            'practice_quiz_id' => $quiz->id,
+            'total_questions' => $quiz->questions_count,
+            'mastered_questions' => 0,
+            'total_attempts' => 0,
+            'correct_attempts' => 0,
+            'status' => 'in_progress',
         ]);
 
-        // Reset session
-        $session->mastered_questions = 0;
-        $session->total_attempts = 0;
-        $session->correct_attempts = 0;
-        $session->status = 'in_progress';
-        $session->completed_at = null;
-        $session->save();
+        // Seed new session question rows
+        $allQuizQIds = PracticeQuestion::where('practice_quiz_id', $quiz->id)->pluck('id')->toArray();
+        $insertBatch = [];
+        $now = Carbon::now();
+        foreach ($allQuizQIds as $qId) {
+            $insertBatch[] = [
+                'session_id' => $newSession->id,
+                'question_id' => $qId,
+                'correct_count' => 0,
+                'incorrect_count' => 0,
+                'is_mastered' => false,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+        if (!empty($insertBatch)) {
+            PracticeSessionQuestion::insert($insertBatch);
+        }
 
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Quiz progress reset! Good luck on your practice.',
-                'session_id' => $session->id,
+                'message' => 'New practice session started! Previous history preserved.',
+                'session_id' => $newSession->id,
             ]);
         }
 
-        return redirect()->route('practice_quiz.play', $session->id)
-            ->with('status', 'Quiz progress reset! Good luck on your practice.');
+        return redirect()->route('practice_quiz.play', $newSession->id)
+            ->with('status', 'New practice session started! Previous history preserved.');
     }
 
     /**

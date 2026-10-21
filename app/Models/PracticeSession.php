@@ -45,4 +45,12 @@ class PracticeSession extends Model
         }
         return min(100, round(($this->mastered_questions / $this->total_questions) * 100));
     }
+
+    public function getAccuracyPercentAttribute()
+    {
+        if ($this->total_attempts == 0) {
+            return 100;
+        }
+        return round(($this->correct_attempts / $this->total_attempts) * 100);
+    }
 }

@@ -447,7 +447,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const sessionId = {{ $session->id }};
+    let sessionId = {{ $session->id }};
     const targetRepetitions = {{ $session->quiz->target_repetitions }};
     const csrfToken = document.querySelector('meta[name="csrf-token"]') ? document.querySelector('meta[name="csrf-token"]').getAttribute('content') : '{{ csrf_token() }}';
 
@@ -783,6 +783,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 return res.json();
             })
             .then(data => {
+                if (data.session_id) {
+                    sessionId = data.session_id;
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({}, '', `/practice-quiz/play/${data.session_id}`);
+                    }
+                }
+
                 // Hide victory state
                 victoryState.style.display = 'none';
                 feedbackPanel.style.display = 'none';
