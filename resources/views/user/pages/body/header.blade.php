@@ -135,86 +135,12 @@
             </div>
             <div class="nav-menus-wrapper" style="transition-property: none;">
                 <ul class="nav-menu">
-
-                    <li class=""><a href="{{ route('/') }}">Home</span></a></li>
-                    <li><a href="{{ route('course') }}">Courses<span class="submenu-indicator"></span></a>
-
-                    <li><a href="{{ route('all.courses') }}">Examination<span class="submenu-indicator"></span></a></li>
+                    <li><a href="{{ route('/') }}">Home</a></li>
+                    <li><a href="{{ route('course') }}">Courses</a></li>
+                    <li><a href="{{ route('all.courses') }}">Examination</a></li>
                     <li><a href="{{ route('practice_quiz.index') }}">Quiz Preparation <span class="badge bg-warning text-dark ml-1" style="font-size: 10px; border-radius: 10px; padding: 2px 6px;">GAME</span></a></li>
-                            @foreach ($catgories as $category)
-                                @php
-                                    $exams = DB::table('exams')
-                                        ->where('catID', $category->id)
-                                        ->where('active', 1)
-                                        ->get();
-                                    $url = str_replace(' ', '-', $category->name);
-                                @endphp
-                                <li><a href="{{ url('/category/' . $category->id . '/' . $url) }}">{{ $category->name }}
-                                        @if ($category->free_paid == 'paid')
-                                            (Paid)
-                                        @endif
-                                        <span class="submenu-indicator"></span></a>
-                                    <ul class="nav-dropdown nav-submenu">
-                                        @if ($exams != '[]')
-                                            @foreach ($exams as $exam)
-                                                @php
-                                                    $Eurl = str_replace(' ', '-', $exam->exam_name);
-                                                    $key = rand(10000, 199999);
-                                                @endphp
-                                                @if ($exam->mcq_written == 'mcq')
-                                                    <li><a
-                                                            href="{{ url('/start-mcq-exam/' . $exam->id . '/' . $Eurl . '/' . $key) }}">{{ $exam->exam_name }}</a>
-                                                    </li>
-                                                @elseif($exam->mcq_written == 'written')
-                                                    <li><a
-                                                            href="{{ url('/start-written-exam/' . $exam->id . '/' . $Eurl . '/' . $key) }}">{{ $exam->exam_name }}</a>
-                                                    </li>
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            <li>
-                                                <div class="text-center">
-                                                    <h4><b>Coming Soon!</b></h4>
-                                                </div>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </li>
-                            @endforeach
-                        </ul> --}}
-                    </li>
-                    {{-- <ul class="nav-dropdown nav-submenu">
-                            @foreach ($courses as $course)
-
-                                <li><a href="{{url('/course/'.$course->id)}}">{{$course->name}} <span class="submenu-indicator"></span></a>
-
-                                            @endforeach
-
-
-
-
-                                </li>
-
-                        </ul> --}}
-                    </li>
-                    {{-- <li><a href="#">Blog<span class="submenu-indicator"></span></a>
-                        <ul class="nav-dropdown nav-submenu">
-                            <li><a href="{{route('user.blog.english')}}">English</a></li>
-                            <li><a href="{{route('user.blog.bangla')}}">Bangla</a></li>
-                        </ul>
-                    </li> --}}
                     <li><a href="{{ route('shop') }}">Shop</a></li>
-                    {{-- <li><a href="{{route('user.books')}}">Admission Program</a></li> --}}
                     <li><a href="{{ route('user.about_us') }}">About Us</a></li>
-                    {{-- <li><a href="#">Others<span class="submenu-indicator"></span></a>
-                        <ul class="nav-dropdown nav-submenu">
-                            <li><a href="{{route('user.about_us')}}">About Us</a></li>
-                            <li><a href="{{route('user.contact_us')}}">Contact</a></li>
-                            <li><a href="{{route('user.mission_and_vission')}}">Mission & Vission</a></li>
-                            <li><a href="{{route('user.privacy_and_policy')}}">Privacy and Policy</a></li>
-                            <li><a href="{{route('user.trams_and_conditions')}}">Terms and Conditions</a></li>
-                        </ul>
-                    </li> --}}
                 </ul>
 
                 <ul class="nav-menu nav-menu-social align-items-center">
