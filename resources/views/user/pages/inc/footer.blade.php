@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="offset-lg-1 col-lg-2 col-md-6 col-sm-6 col-12 mt--30">
+                <div class="col-lg-2 col-md-6 col-sm-6 col-12 mt--30">
                     <div class="footer-widget">
                         <h5 class="ft-title">Category</h5>
                         <ul class="ft-link">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-6 col-sm-6 col-12 mt--30">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12 mt--30">
                     <div class="footer-widget">
                         <h5 class="ft-title">Quick Links</h5>
                         <ul class="ft-link">
