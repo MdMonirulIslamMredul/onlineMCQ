@@ -197,15 +197,19 @@ class PracticeQuizAdminController extends Controller
     {
         $question = PracticeQuestion::where('id', $questionId)
             ->where('practice_quiz_id', $quizId)
-            ->firstOrFail();
+            ->first();
 
-        $question->delete();
+        if ($question) {
+            $question->delete();
 
-        // Update total questions count in sessions
-        $totalQ = PracticeQuestion::where('practice_quiz_id', $quizId)->count();
-        PracticeSession::where('practice_quiz_id', $quizId)->update(['total_questions' => $totalQ]);
+            // Update total questions count in sessions
+            $totalQ = PracticeQuestion::where('practice_quiz_id', $quizId)->count();
+            PracticeSession::where('practice_quiz_id', $quizId)->update(['total_questions' => $totalQ]);
 
-        return back()->with('status', 'Question deleted successfully.');
+            return redirect()->route('cms.practice_quiz.questions', $quizId)->with('status', 'Question deleted successfully.');
+        }
+
+        return redirect()->route('cms.practice_quiz.questions', $quizId)->with('status', 'Question was already deleted.');
     }
 
     /**
