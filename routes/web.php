@@ -417,11 +417,12 @@ Route::group(['middleware'=>'admin_auth'], function() {
     Route::post('/cms/practice-quizzes/store', [PracticeQuizAdminController::class, 'store'])->name('cms.practice_quiz.store');
     Route::get('/cms/practice-quizzes/edit/{id}', [PracticeQuizAdminController::class, 'edit'])->name('cms.practice_quiz.edit');
     Route::post('/cms/practice-quizzes/update/{id}', [PracticeQuizAdminController::class, 'update'])->name('cms.practice_quiz.update');
-    Route::delete('/cms/practice-quizzes/delete/{id}', [PracticeQuizAdminController::class, 'destroy'])->name('cms.practice_quiz.delete');
+    Route::match(['get', 'delete'], '/cms/practice-quizzes/delete/{id}', [PracticeQuizAdminController::class, 'destroy'])->name('cms.practice_quiz.delete');
     Route::get('/cms/practice-quizzes/toggle/{id}', [PracticeQuizAdminController::class, 'toggleStatus'])->name('cms.practice_quiz.toggle');
     Route::get('/cms/practice-quizzes/{id}/questions', [PracticeQuizAdminController::class, 'questionsIndex'])->name('cms.practice_quiz.questions');
     Route::post('/cms/practice-quizzes/{id}/questions/save', [PracticeQuizAdminController::class, 'saveQuestions'])->name('cms.practice_quiz.questions.save');
-    Route::delete('/cms/practice-quizzes/{quizId}/questions/{questionId}', [PracticeQuizAdminController::class, 'deleteQuestion'])->name('cms.practice_quiz.questions.delete');
+    Route::match(['get', 'delete'], '/cms/practice-quizzes/{quizId}/questions/{questionId}', [PracticeQuizAdminController::class, 'deleteQuestion'])->name('cms.practice_quiz.questions.delete');
+    Route::match(['get', 'delete'], '/cms/practice-quizzes/{quizId}/questions/{questionId}/delete', [PracticeQuizAdminController::class, 'deleteQuestion']);
     Route::post('/cms/practice-quizzes/{id}/questions/upload-csv', [PracticeQuizAdminController::class, 'uploadCsv'])->name('cms.practice_quiz.upload_csv');
     // End:: Practice Quizzes
 
