@@ -870,6 +870,39 @@ html.dark-theme .rbt-course-action-bottom .title {
     color: var(--text-primary) !important;
 }
 
+html.dark-theme .course-sidebar,
+html.dark-theme .rbt-shadow-box {
+    background-color: var(--bg-surface) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-theme .course-sidebar .content-item-content h6 {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .course-sidebar .content-item-content ul li {
+    color: var(--text-secondary) !important;
+}
+
+html.dark-theme .rbt-course-main-content li a {
+    color: var(--text-primary) !important;
+}
+
+html.dark-theme .rbt-course-main-content li {
+    border-bottom-color: var(--border-color) !important;
+}
+
+html.dark-theme .rbt-accordion-style .card {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+html.dark-theme .rbt-accordion-style .card-header .accordion-button {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+}
+
 html.dark-theme .rbt-inner-onepage-navigation {
     background-color: var(--bg-surface) !important;
     border: 1px solid var(--border-color) !important;
