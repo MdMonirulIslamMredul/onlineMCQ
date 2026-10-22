@@ -190,7 +190,6 @@
                                     @endforeach
 
                                 </ul> --}}
-                            </li>
 
                             <li class="with-megamenu has-menu-child-item position-static">
                                 <a href="{{ route('shop') }}">Shop </a>
