@@ -722,9 +722,9 @@
     @php
         $subscriptions = DB::table('subscriptions')->orderBy('id', 'asc')->take(3)->get();
     @endphp
-    <!-- Start pricing Area  -->
+    {{-- <!-- Start pricing Area  -->
     <div class="rbt-pricing-area bg-color-white rbt-section-gap">
-        {{-- <div class="container">
+        <div class="container">
             <div class="row g-5 mb--60">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="section-title text-start">
@@ -807,7 +807,7 @@
                     @endforeach
                 </div>
             </div>
-        </div> --}}
+        </div>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const yearlyPlanBtn = document.querySelector('.yearly-plan-btn');
@@ -831,7 +831,8 @@
                 });
             });
         </script>
-        <!-- End pricing Area  -->
+    </div>
+    <!-- End pricing Area  --> --}}
         {{-- <script>
     document.querySelector('.yearly-plan-btn').addEventListener('click', function() {
         document.querySelectorAll('.yearly-pricing').forEach(function(el) {
