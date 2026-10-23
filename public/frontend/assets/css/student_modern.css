@@ -859,3 +859,24 @@ h1, h2, h3, h4, h5, h6, .title, .rbt-card-title {
     box-shadow: 0 6px 20px rgba(3, 198, 187, 0.5) !important;
 }
 
+/* Footer Bottom Spacing Optimization */
+.footer-style-1 .footer-top {
+    padding-bottom: 40px !important;
+}
+@media only screen and (max-width: 767px) {
+    .footer-style-1 .footer-top {
+        padding-bottom: 30px !important;
+    }
+}
+.copyright-area.copyright-style-1 {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+}
+.copyright-area.copyright-style-1 p {
+    margin-bottom: 0 !important;
+}
+.copyright-area.copyright-style-1 .copyright-link {
+    margin-bottom: 0 !important;
+}
+
+
