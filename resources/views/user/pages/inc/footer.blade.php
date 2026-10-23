@@ -5,7 +5,7 @@
     $news = DB::table('notice')->where('active', 1)->orderBy('id', 'desc')->get();
 @endphp
 <footer class="rbt-footer footer-style-1">
-    <div class="footer-top">
+    <div class="footer-top pb--40">
         <div class="container">
             <div class="row row--15 mt_dec--30">
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12 mt--30">
@@ -111,14 +111,14 @@
     </div>
 </div>
 <!-- Start Copyright Area  -->
-<div class="copyright-area copyright-style-1 ptb--20">
+<div class="copyright-area copyright-style-1 ptb--15">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-12">
-                <p class="rbt-link-hover text-center text-lg-start">{{ optional($company_info)->footer_credit ?? '© 2026 Pathjolpona. All Rights Reserved.' }}</p>
+                <p class="rbt-link-hover text-center text-lg-start mb-0">{{ optional($company_info)->footer_credit ?? '© 2026 Pathjolpona. All Rights Reserved.' }}</p>
             </div>
             <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-12">
-                <ul class="copyright-link rbt-link-hover justify-content-center justify-content-lg-end mt_sm--10 mt_md--10">
+                <ul class="copyright-link rbt-link-hover justify-content-center justify-content-lg-end mb-0 mt_sm--10 mt_md--10">
                     <li><a href="{{ route('user.trams_and_conditions') }}">Terms of service</a></li>
                     <li><a href="{{ route('user.privacy_and_policy') }}">Privacy policy</a></li>
                     <li><a href="{{ route('user.return_and_refund_policy') }}">Refund policy</a></li>
