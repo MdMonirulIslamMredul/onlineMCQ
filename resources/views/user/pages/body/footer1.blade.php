@@ -4,7 +4,7 @@
 $company_info = $company_info ?? DB::table('company_settings')->first();
 $FooterfreeExams = DB::table('exams')->where('free_paid', 'free')->limit(5)->get();
 @endphp
-<footer>
+<footer style="padding-top: 0;">
 
         {{-- <div class="container">
             <div class="row">
@@ -55,7 +55,7 @@ $FooterfreeExams = DB::table('exams')->where('free_paid', 'free')->limit(5)->get
         </div> --}}
 
 
-    <div class="footer-bottom">
+    <div class="footer-bottom" style="margin-top: 0; padding: 12px 0;">
         <div class="container">
             <div class="row align-items-center">
 
@@ -68,7 +68,7 @@ $FooterfreeExams = DB::table('exams')->where('free_paid', 'free')->limit(5)->get
                 </div> --}}
 
                 <div class="col-lg-6 col-md-3 text-right">
-                    <ul class="footer-bottom-social">
+                    <ul class="footer-bottom-social mb-0">
                         <li><a href="{{ optional($company_info)->facebook }}"><i class="ti-facebook"></i></a></li>
                         <li><a href="{{ optional($company_info)->youtube }}"><i class="fa fa-youtube-play"></i></a></li>
                         <li><a href="{{ optional($company_info)->twitter }}"><i class="ti-twitter"></i></a></li>
