@@ -15,6 +15,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\PracticeQuizAdminController;
 use App\Http\Controllers\PracticeQuizController;
+use App\Http\Controllers\PaymentGatewayController;
 use App\Models\CourseCategory;
 
 // Begin:: Frontend Route
@@ -163,7 +164,8 @@ Route::group(['middleware'=>'user_auth'], function() {
     Route::get('/my-account-orders', [FrontCon::class, 'MyAccountPageorder'])->name('user.myaccount.order');
     Route::get('/my-account-dashboard', [FrontCon::class, 'MyAccountPagedashboard'])->name('user.myaccount.dashboard');
     Route::get('/free-lession/{id}', [FrontCon::class,"free_lession"])->name('free.lession');
-    Route::get('/lession/{id}/{userID}', [FrontCon::class,"course_lession"])->name('lession')->middleware('enroll_check');
+    Route::get('/lession/{id}/{userID?}', [FrontCon::class,"course_lession"])->name('lession')->middleware('enroll_check');
+    Route::get('/paid-lession/{id}', [FrontCon::class,"course_lession"])->name('paid.lession')->middleware('enroll_check');
 
     //Course Order
     Route::post('course_order', [FrontCon::class,"courseOrder"])->name('course.order');
@@ -362,11 +364,14 @@ Route::group(['middleware'=>'admin_auth'], function() {
     // End:: Teachers
 
     // Begin:: Exams
+    Route::get('/cms/all-exams', [ExamCon::class, 'indexAll'])->name('cms.all_exams');
+    Route::get('/cms/mcq-exams', [ExamCon::class, 'indexMCQ'])->name('cms.mcq_exams');
+    Route::get('/cms/written-exams', [ExamCon::class, 'indexWritten'])->name('cms.written_exams');
     Route::get('/cms/permanent-exams', [ExamCon::class, 'indexParment'])->name('cms.permanent_exams');
     Route::get('/cms/temporary-exams', [ExamCon::class, 'indexTemporary'])->name('cms.temporary_exams');
     Route::get('/cms/add-exams', [ExamCon::class, 'Add_exams'])->name('cms.add_exams');
     Route::post('/cms/add-exams-confirm', [ExamCon::class, 'Add_exams_Confirm'])->name('cms.add_exam_confirm');
-    Route::get('/cms/edit-exam/{id}', [ExamCon::class, 'EditExam']);
+    Route::get('/cms/edit-exam/{id}', [ExamCon::class, 'EditExam'])->name('cms.edit_exam');
     Route::get('/cms/result/{id}', [ExamCon::class, 'allresult']);
     Route::get('/cms/parmanent/result/{id}', [ExamCon::class, 'allresult']);
     Route::post('/cms/update-exam/{id}', [ExamCon::class, 'UpdateExams']);
@@ -476,6 +481,17 @@ Route::group(['middleware'=>'admin_auth'], function() {
     Route::post('/cms/admin-books-order-change', [AdminCon::class, 'Update_admin_order_status'])->name('cms.admin_order_change');
     Route::post('/cms/admin-courses-order-change', [AdminCon::class, 'Update_admin_courses_order_status'])->name('cms.admin_courses_order_change');
     // End:: Orders
+
+    // Begin:: Payment Gateways
+    Route::get('/cms/payment-gateways', [PaymentGatewayController::class, 'index'])->name('cms.payment_gateways.index');
+    Route::get('/cms/payment-gateways/create', [PaymentGatewayController::class, 'create'])->name('cms.payment_gateways.create');
+    Route::post('/cms/payment-gateways/store', [PaymentGatewayController::class, 'store'])->name('cms.payment_gateways.store');
+    Route::get('/cms/payment-gateways/edit/{id}', [PaymentGatewayController::class, 'edit'])->name('cms.payment_gateways.edit');
+    Route::post('/cms/payment-gateways/update/{id}', [PaymentGatewayController::class, 'update'])->name('cms.payment_gateways.update');
+    Route::get('/cms/payment-gateways/toggle/{id}', [PaymentGatewayController::class, 'toggleStatus'])->name('cms.payment_gateways.toggle');
+    Route::match(['get', 'delete', 'post'], '/cms/payment-gateways/delete/{id}', [PaymentGatewayController::class, 'destroy'])->name('cms.payment_gateways.destroy');
+    Route::match(['get', 'delete', 'post'], '/cms/payment-gateways/destroy/{id}', [PaymentGatewayController::class, 'destroy'])->name('cms.payment_gateways.delete');
+    // End:: Payment Gateways
 
     // Begin:: English lerning
     Route::get('/cms/learning-english', function() {
