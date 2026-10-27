@@ -14,6 +14,7 @@ use App\Models\CourseCategory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\WrittenResultsParent;
+use App\Models\PaymentGateway;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -690,13 +691,14 @@ class FrontCon extends Controller
         return view('user.pages.extra.checkout1', compact('pid', 'quantity', 'product_info', 'user_info'));
     }
     public function buycourse() {
-           $user = Cookie::get('user_id');
-           if($user){
-        $courseid = $_GET['productID'];
-        return view('user.pages.extra.buycourse', compact('courseid'));
-           }else{
-               return redirect('/')->with('adminError', 'Please sing in first');
-           }
+        $user = Cookie::get('user_id');
+        if($user){
+            $courseid = request()->query('productID');
+            $gateways = PaymentGateway::where('status', 1)->orderBy('id', 'asc')->get();
+            return view('user.pages.extra.buycourse', compact('courseid', 'gateways'));
+        }else{
+            return redirect('/user-signin-singup')->with('adminError', 'Please sign in first to purchase this course');
+        }
     }
 
     public function Confirm_Checkout(Request $request) {
@@ -759,67 +761,79 @@ class FrontCon extends Controller
     }
 
     public function courseOrder(Request $request) {
-        // dd($request->all());
-        $validated = $request->validate([
+        $user = Cookie::get('user_id') ?? $request->cookie('user_id');
+        
+        if (!$user) {
+            return redirect('/user-signin-singup')->with('adminError', 'Please sign in to complete your course enrollment.');
+        }
+
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|max:255',
             'phone' => 'required|string|max:20',
             'address' => 'nullable|string|max:255',
             'course_id' => 'required|numeric',
             'price' => 'required|numeric|min:0',
-            // 'agree' => 'accepted',
-        ]);
-    
-        $user = Cookie::get('user_id');
-        
-        if (!$user) {
-            return redirect()->route('login.page')->withErrors('User not authenticated. Please log in.');
-        }
-    
-        $post_data = [
-            'total_amount' => $request->price,
-            'currency' => "BDT",
-            'tran_id' => uniqid(),
-            'cus_name' => $request->name,
-            'cus_email' => $request->email,
-            'cus_add1' => $request->address,
-            'userID' => $user,
-            'cus_country' => "Bangladesh",
-            'cus_phone' => $request->phone,
-            'ship_name' => "Store Test",
-            'ship_add1' => "Dhaka",
-            'ship_country' => "Bangladesh",
-            'shipping_method' => "NO",
-            'product_name' => "Computer",
-            'product_category' => "Goods",
-            'product_profile' => "physical-goods",
+            'payment_gateway_id' => 'required|exists:payment_gateways,id',
+            'screenshot' => 'required|image|mimes:jpeg,png,jpg,webp,svg|max:5120',
+            'trx_id' => 'required|string|max:255',
         ];
-    
+
+        $gateway = PaymentGateway::findOrFail($request->payment_gateway_id);
+
+        if ($gateway->type === 'mfs') {
+            $rules['sender_number'] = 'required|string|max:50';
+        } else {
+            $rules['bank_name'] = 'required|string|max:255';
+            $rules['bank_account_number'] = 'required|string|max:100';
+        }
+
+        $request->validate($rules);
+
+        $screenshotPath = null;
+        if ($request->hasFile('screenshot')) {
+            $file = $request->file('screenshot');
+            $filename = 'pay_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/payments'), $filename);
+            $screenshotPath = 'uploads/payments/' . $filename;
+        }
+
         $total_order = DB::table('courses_order')->count('id');
         $order_num = 'EOD' . date("dmy") . ($total_order + 1);
-    
+
         $data = [
+            'pid' => $request->course_id,
+            'course_id' => $request->course_id,
             'user_id' => $user,
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
-            'address' => $request->address,
-            'course_id' => $request->course_id,
+            'address' => $request->address ?? '',
             'price' => $request->price,
-            'amount' => $post_data['total_amount'],
+            'amount' => $request->price,
+            'currency' => 'BDT',
             'orderNum' => $order_num,
-            'transaction_id' => $post_data['tran_id'],
+            'transaction_id' => $request->trx_id,
+            'trx_id' => $request->trx_id,
+            'payment_gateway_id' => $gateway->id,
+            'payment_method' => $gateway->name,
+            'payment_type' => $gateway->type,
+            'sender_number' => $request->sender_number ?? null,
+            'bank_name' => $request->bank_name ?? ($gateway->type === 'bank' ? $gateway->bank_name : null),
+            'bank_account_number' => $request->bank_account_number ?? null,
+            'screenshot' => $screenshotPath,
             'status' => 'pending',
+            'payment_status' => 'pending',
             'date' => now(),
         ];
-    
+
         try {
             DB::table('courses_order')->insert($data);
         } catch (\Exception $e) {
-            return redirect()->back()->withErrors('An error occurred while placing the order.');
+            return redirect()->back()->with('error', 'An error occurred while placing the order: ' . $e->getMessage());
         }
-    
-        return redirect()->back()->with('status', 'Order placed successfully. Please proceed to payment.');
+
+        return redirect()->route('user.myaccount.order')->with('userSuccess', 'Payment submitted successfully! Your manual payment is under verification by our team. Once approved, the course will be unlocked immediately.');
     }
     
 }
