@@ -15,4 +15,14 @@ class CoursesOrder extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+    }
+
+    public function paymentGateway()
+    {
+        return $this->belongsTo(PaymentGateway::class, 'payment_gateway_id', 'id');
+    }
 }
