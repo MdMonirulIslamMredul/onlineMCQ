@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" width="120" height="60">
+  <rect width="120" height="60" rx="10" fill="#0A3A60"/>
+  <path d="M25 24h18l-9-9-9 9zm2 3h3v13h-3V27zm6 0h3v13h-3V27zm6 0h3v13h-3V27zM23 42h22v3H23v-3z" fill="#FFF"/>
+  <text x="49" y="36" fill="#FFF" font-family="Arial, sans-serif" font-weight="900" font-size="16">BANK</text>
+</svg>
