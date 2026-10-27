@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 60" width="120" height="60">
+  <rect width="120" height="60" rx="10" fill="#8C3494"/>
+  <path d="M22 36l8-16 8 16-8-4-8 4z" fill="#FFF"/>
+  <text x="44" y="37" fill="#FFF" font-family="Arial, sans-serif" font-weight="900" font-size="18">Rocket</text>
+</svg>
