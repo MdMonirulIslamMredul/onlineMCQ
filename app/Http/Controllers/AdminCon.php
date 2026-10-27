@@ -325,7 +325,11 @@ class AdminCon extends Controller
 
     public function Course_order_details($id) {
         $orders_info = DB::table('courses_order')->where('id', $id)->first();
-        return view('cms.orders.courseorderDetails', compact('orders_info'));
+        $gateway = null;
+        if ($orders_info && !empty($orders_info->payment_gateway_id)) {
+            $gateway = \App\Models\PaymentGateway::find($orders_info->payment_gateway_id);
+        }
+        return view('cms.orders.courseorderDetails', compact('orders_info', 'gateway'));
     }
 
     public function Update_admin_order_status(Request $request) {
@@ -343,18 +347,25 @@ class AdminCon extends Controller
         return Redirect()->back()->with('status', 'Order Status Update Successfully.');
     }
     public function Update_admin_courses_order_status(Request $request) {
-        // dd($request->all());
         $order_status = $request->order_status;
         $invID = $request->invID;
 
         $data = array();
         $data['status'] = $order_status;
-       if ($order_status=="delivered") {
-        $data['payment_status'] = 'paid';
-       }
+        if ($order_status == "enrolled" || $order_status == "delivered" || $order_status == "approved") {
+            $data['payment_status'] = 'paid';
+        } elseif ($order_status == "rejected" || $order_status == "canceled") {
+            $data['payment_status'] = 'rejected';
+        } elseif ($order_status == "pending") {
+            $data['payment_status'] = 'pending';
+        }
+
+        if ($request->filled('admin_note')) {
+            $data['admin_note'] = $request->admin_note;
+        }
 
         DB::table('courses_order')->where('id', $invID)->update($data);
-        return Redirect()->back()->with('status', 'Order Status Update Successfully.');
+        return Redirect()->back()->with('status', 'Course enrollment payment status updated successfully.');
     }
 
     //End:: Books orders
