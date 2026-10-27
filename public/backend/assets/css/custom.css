@@ -1,4 +1,129 @@
 
-/*# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY3VzdG9tLmNzcyIsInNvdXJjZXMiOlsiY3VzdG9tLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiJ9 */
+/* ==========================================================================
+   Admin Sidebar Enhancements & Alignment Fixes
+   ========================================================================== */
 
-/*# sourceMappingURL=custom.css.map */
+.main-sidebar .sidebar-menu > li > a {
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    height: 50px !important;
+    padding: 0 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-decoration: none !important;
+    position: relative !important;
+}
+
+.main-sidebar .sidebar-menu > li > a i {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 26px !important;
+    min-width: 26px !important;
+    font-size: 15px !important;
+    margin-right: 10px !important;
+    text-align: center !important;
+    flex-shrink: 0 !important;
+    float: none !important;
+}
+
+.main-sidebar .sidebar-menu > li > a span.menu-title,
+.main-sidebar .sidebar-menu > li > a > span:not(.badge):not(.sidebar-badge) {
+    display: inline-block !important;
+    width: auto !important;
+    flex-grow: 1 !important;
+    flex-shrink: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin-top: 0 !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+}
+
+/* Sidebar notification badge */
+.main-sidebar .sidebar-menu > li > a .sidebar-badge,
+.main-sidebar .sidebar-menu > li > a .badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    float: none !important;
+    width: auto !important;
+    min-width: 22px !important;
+    height: 20px !important;
+    padding: 0 7px !important;
+    margin: 0 0 0 auto !important;
+    flex-shrink: 0 !important;
+    border-radius: 10px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    background-color: #ffa117 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) !important;
+    letter-spacing: 0 !important;
+}
+
+/* Active state for sidebar items */
+.main-sidebar .sidebar-menu > li.active > a {
+    background-color: #353c48 !important;
+    color: #ffffff !important;
+}
+
+.main-sidebar .sidebar-menu > li.active > a .sidebar-badge {
+    background-color: #ffa117 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Dropdown items badge styling */
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding-right: 15px !important;
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a span.menu-title,
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a > span:not(.badge):not(.sidebar-badge) {
+    flex-grow: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 13px !important;
+}
+
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a .sidebar-badge,
+.main-sidebar .sidebar-menu li ul.dropdown-menu li a .badge {
+    margin-left: auto !important;
+    min-width: 18px !important;
+    height: 18px !important;
+    padding: 0 5px !important;
+    font-size: 10px !important;
+}
+
+/* Collapsed mini sidebar */
+.sidebar-mini .main-sidebar .sidebar-menu > li > a {
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+.sidebar-mini .main-sidebar .sidebar-menu > li > a span.menu-title,
+.sidebar-mini .main-sidebar .sidebar-menu > li > a > span:not(.badge):not(.sidebar-badge) {
+    display: none !important;
+}
+
+.sidebar-mini .main-sidebar .sidebar-menu > li > a .sidebar-badge,
+.sidebar-mini .main-sidebar .sidebar-menu > li > a .badge {
+    position: absolute !important;
+    top: 6px !important;
+    right: 8px !important;
+    min-width: 16px !important;
+    height: 16px !important;
+    padding: 0 4px !important;
+    font-size: 9px !important;
+    margin: 0 !important;
+}
+
