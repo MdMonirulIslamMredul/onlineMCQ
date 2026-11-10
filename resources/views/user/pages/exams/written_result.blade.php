@@ -14,7 +14,7 @@ $percentage = ($totalMarks > 0 && $isChecked) ? round(($studentMark / $totalMark
 @endphp
 
 <!-- Start Hero Banner -->
-<div class="student-hero" style="padding: 50px 0 60px;">
+<div class="student-hero" style="padding: 30px 0 35px;">
     <div class="container text-center">
         <div class="student-hero-badge mx-auto">
             <i class="feather-award"></i> Written Exam Evaluation
@@ -28,7 +28,7 @@ $percentage = ($totalMarks > 0 && $isChecked) ? round(($studentMark / $totalMark
     </div>
 </div>
 
-<div class="rbt-section-gapTop pb--80 bg-color-white">
+<div class="bg-color-white pt-4 pb-5">
     <div class="container">
         <!-- Scorecard Overview -->
         <div class="row justify-content-center mb-5">
@@ -96,7 +96,7 @@ $percentage = ($totalMarks > 0 && $isChecked) ? round(($studentMark / $totalMark
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <span class="exam-question-number">Question {{ $i }} of {{ count($written_results) }}</span>
                             <div>
-                                <span class="badge" style="background: rgba(3, 198, 187, 0.12); color: #03c6bb; font-weight: 700; padding: 6px 12px; border-radius: 9999px;">
+                                <span class="badge" style="background: rgba(0, 122, 85, 0.12); color: #007A55; font-weight: 700; padding: 6px 12px; border-radius: 9999px;">
                                     Max: {{ $written->mark }} Marks
                                 </span>
                                 @if($isChecked)
