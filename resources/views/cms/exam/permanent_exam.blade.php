@@ -70,11 +70,11 @@
                                                         <a href="{{ url('/cms/parmanent/result/'.$exam->exam_id) }}" class="btn btn-primary mr-2">Result</a>
                                                     </div>
                                                     <div>
-                                                        <form action="{{ route('cms.delete.exam', $exam->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('cms.delete.exam', $exam->exam_id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure you want to delete this teacher?')">Delete</button>
+                                                                onclick="return confirm('Are you sure you want to delete this exam?')">Delete</button>
                                                         </form>
                                                     </div>
                                                     
