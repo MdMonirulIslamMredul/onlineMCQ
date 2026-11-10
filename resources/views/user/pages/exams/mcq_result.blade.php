@@ -28,7 +28,7 @@ $percentage = $totalMarks > 0 ? round(($mark / $totalMarks) * 100) : 0;
 @endphp
 
 <!-- Start Hero Banner -->
-<div class="student-hero" style="padding: 50px 0 60px;">
+<div class="student-hero" style="padding: 30px 0 35px;">
     <div class="container text-center">
         <div class="student-hero-badge mx-auto">
             <i class="feather-award"></i> Exam Evaluation Report
@@ -43,7 +43,7 @@ $percentage = $totalMarks > 0 ? round(($mark / $totalMarks) * 100) : 0;
 </div>
 <!-- End Hero Banner -->
 
-<div class="rbt-section-gapTop pb--80 bg-color-white">
+<div class="bg-color-white pt-4 pb-5">
     <div class="container">
         <!-- Scorecard Overview -->
         <div class="row justify-content-center mb-5">
@@ -64,7 +64,7 @@ $percentage = $totalMarks > 0 ? round(($mark / $totalMarks) * 100) : 0;
                                     📚 Keep Practicing!
                                 @endif
                             </h4>
-                            <span class="badge" style="background: rgba(3, 198, 187, 0.15); color: #009e95; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 9999px;">
+                            <span class="badge" style="background: rgba(0, 122, 85, 0.15); color: #005a3e; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 9999px;">
                                 Score: {{ $percentage }}%
                             </span>
                         </div>
@@ -117,7 +117,7 @@ $percentage = $totalMarks > 0 ? round(($mark / $totalMarks) * 100) : 0;
             <div class="col-lg-9 col-12">
                 <div class="d-flex align-items-center justify-content-between pb-3 border-bottom">
                     <h3 class="mb-0" style="font-size: 22px; font-weight: 700; color: #0f172a;">
-                        <i class="feather-list me-2" style="color: #03c6bb;"></i> Detailed Question Review
+                        <i class="feather-list me-2" style="color: #007A55;"></i> Detailed Question Review
                     </h3>
                     <span class="text-muted" style="font-size: 14px;">Total {{ count($mcq_results) }} Reviewed</span>
                 </div>
@@ -205,8 +205,8 @@ $percentage = $totalMarks > 0 ? round(($mark / $totalMarks) * 100) : 0;
 
                         <!-- Answer Explanation Note -->
                         @if(!empty(optional($questionsInfo)->writeAnsDes))
-                            <div class="p-3 rounded-3 mt-3" style="background: rgba(3, 198, 187, 0.08); border-left: 4px solid #03c6bb;">
-                                <div style="color: #009e95; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">
+                            <div class="p-3 rounded-3 mt-3" style="background: rgba(0, 122, 85, 0.08); border-left: 4px solid #007A55;">
+                                <div style="color: #005a3e; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em;">
                                     <i class="feather-info me-1"></i> Solution Explanation
                                 </div>
                                 <div class="mt-1" style="color: #334155; font-size: 14px; line-height: 1.6;">
