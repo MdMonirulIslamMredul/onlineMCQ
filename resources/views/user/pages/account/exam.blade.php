@@ -31,7 +31,7 @@ $courses = DB::table('courses')
 @endphp
 
 <!-- Start Hero / Breadcrumb Area -->
-<div class="student-hero" style="padding: 50px 0 60px;">
+<div class="student-hero" style="padding: 22px 0 24px;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 col-12">
@@ -41,7 +41,7 @@ $courses = DB::table('courses')
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
                         <li><a href="{{ route('user.myaccount.dashboard') }}" style="color: #94a3b8; text-decoration: none;">Dashboard</a></li>
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">Quiz Attempts</li>
+                        <li style="color: #007A55; font-weight: 600;">Quiz Attempts</li>
                     </ul>
                 </nav>
                 <div class="student-hero-badge">
@@ -65,40 +65,12 @@ $courses = DB::table('courses')
 </div>
 <!-- End Hero Area -->
 
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 25px; padding-bottom: 40px;">
     <div class="container">
         <div class="row g-4">
             <!-- Sidebar Navigation -->
             <div class="col-lg-3 col-md-4 col-12">
-                <div class="p-4 rounded-4 shadow-sm" style="background: #ffffff; border: 1px solid #e2e8f0; position: sticky; top: 90px;">
-                    <!-- Student Mini Profile -->
-                    <div class="text-center pb-4 mb-4 border-bottom">
-                        <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; background: linear-gradient(135deg, #03c6bb 0%, #4f46e5 100%); color: #ffffff; font-size: 32px; font-weight: 800; box-shadow: 0 6px 16px rgba(3, 198, 187, 0.3);">
-                            {{ strtoupper(substr($userName, 0, 1)) }}
-                        </div>
-                        <h5 class="mb-1" style="font-weight: 700; color: #0f172a;">{{ $userName }}</h5>
-                        <span class="text-muted" style="font-size: 13px;">{{ optional($userQ)->phone ?? optional($userQ)->email }}</span>
-                    </div>
-
-                    <!-- Navigation Items -->
-                    <div class="d-flex flex-column gap-2">
-                        <a href="{{ route('user.myaccount.dashboard') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none text-muted" style="transition: all 0.2s;">
-                            <i class="feather-grid"></i> Dashboard
-                        </a>
-                        <a href="{{ route('user.myaccount.courses') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none text-muted" style="transition: all 0.2s;">
-                            <i class="feather-book-open"></i> Enrolled Courses ({{ $courses->count() }})
-                        </a>
-                        <a href="{{ route('user.myaccount.exam') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none" style="background: rgba(3, 198, 187, 0.1); color: #009e95; font-weight: 700;">
-                            <i class="feather-check-square"></i> My Quiz Attempts ({{ $attendExams->count() + $practiceSessions->count() }})
-                        </a>
-                        <a href="{{ route('user.myaccount.profile') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none text-muted" style="transition: all 0.2s;">
-                            <i class="feather-user"></i> My Profile
-                        </a>
-                        <a href="{{ route('user.logout') }}" class="p-3 rounded-3 d-flex align-items-center gap-3 text-decoration-none text-danger mt-3 border-top pt-3" style="font-weight: 600;">
-                            <i class="feather-log-out"></i> Logout
-                        </a>
-                    </div>
-                </div>
+                @include('user.pages.account.sidebar')
             </div>
 
             <!-- Main Content Area -->
@@ -108,7 +80,7 @@ $courses = DB::table('courses')
                         <h3 class="mb-1" style="font-weight: 800; color: #0f172a; font-size: 22px;">Completed Assessments</h3>
                         <p class="text-muted mb-0" style="font-size: 14px;">Every exam you have submitted with full analytical breakdown.</p>
                     </div>
-                    <span class="badge px-3 py-2 rounded-pill" style="background: rgba(3, 198, 187, 0.1); color: #009e95; font-weight: 700;">
+                    <span class="badge px-3 py-2 rounded-pill" style="background: rgba(0, 122, 85, 0.1); color: #005a3e; font-weight: 700;">
                         {{ $attendExams->count() }} Submissions
                     </span>
                 </div>
@@ -137,7 +109,7 @@ $courses = DB::table('courses')
                                         </td>
                                         <td class="py-3 px-3">
                                             @if($resultExam->mcq_written == 'mcq')
-                                                <span class="badge px-2 py-1 rounded-pill" style="background: rgba(3, 198, 187, 0.12); color: #009e95; font-weight: 700; font-size: 11px;">
+                                                <span class="badge px-2 py-1 rounded-pill" style="background: rgba(0, 122, 85, 0.12); color: #005a3e; font-weight: 700; font-size: 11px;">
                                                     <i class="feather-check-circle me-1"></i> MCQ Test
                                                 </span>
                                             @else
