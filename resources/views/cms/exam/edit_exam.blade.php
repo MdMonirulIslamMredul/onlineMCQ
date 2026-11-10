@@ -2,19 +2,32 @@
 @section('admin_content')
 
 <section class="section">
-    <div class="section-header">
-        <h1>Update Exam</h1>
+    <div class="section-header d-flex justify-content-between align-items-center">
+        <div>
+            <h1>Update Exam</h1>
+            <div class="section-header-breadcrumb mt-1">
+                <div class="breadcrumb-item active"><a href="{{ url('/cms') }}">Dashboard</a></div>
+                <div class="breadcrumb-item"><a href="{{ route('cms.all_exams') }}">Exams</a></div>
+                <div class="breadcrumb-item">Edit Exam #{{ $exam->id }}</div>
+            </div>
+        </div>
+        <div>
+            <a href="{{ request('redirect_to', route('cms.all_exams')) }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-1"></i> Back to Exams
+            </a>
+        </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4></h4>
+                    <h4>Editing: {{ $exam->exam_name }}</h4>
                 </div>
                 <div class="card-body">
                     <form action="{{url('/cms/update-exam/'.$exam->id)}}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="redirect_to" value="{{ request('redirect_to', url()->previous()) }}">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputEmail4"><span class="text-danger">*</span>Cagetories</label>
