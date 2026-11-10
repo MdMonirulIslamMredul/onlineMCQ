@@ -54,7 +54,7 @@ if ($examType == 'permanent') {
             <div class="d-flex align-items-center gap-3">
                 <!-- Countdown Timer -->
                 <div id="clockdiv" class="d-flex align-items-center gap-1 p-2 rounded-3" style="background: #0f172a; color: #ffffff; font-family: var(--font-heading); font-weight: 700;">
-                    <i class="feather-clock ms-2 me-1" style="color: #03c6bb; font-size: 18px; animation: pulse 1.5s infinite;"></i>
+                    <i class="feather-clock ms-2 me-1" style="color: #007A55; font-size: 18px; animation: pulse 1.5s infinite;"></i>
                     <div class="px-2 py-1 rounded text-center" style="background: #1e293b; min-width: 36px;">
                         <span class="hours" style="font-size: 16px; color: #38bdf8;">00</span>
                         <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Hrs</div>
@@ -82,7 +82,7 @@ if ($examType == 'permanent') {
     </div>
 </div>
 
-<div class="rbt-section-gapTop pb--80 bg-color-white" style="min-height: 80vh;">
+<div class="bg-color-white py-4" style="min-height: 80vh;">
     <div class="container">
         @if($startStatus == 1)
             <input type="hidden" id="examTime" value="{{ $examTime }}">
