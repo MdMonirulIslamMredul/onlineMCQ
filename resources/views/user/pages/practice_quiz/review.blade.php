@@ -3,7 +3,7 @@
 @push('test_style')
 <style>
     .review-hero {
-        background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.15) 0%, transparent 40%),
+        background: radial-gradient(circle at 10% 20%, rgba(0, 122, 85, 0.15) 0%, transparent 40%),
                     radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.18) 0%, transparent 45%),
                     linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         padding: 50px 0 60px;
@@ -35,29 +35,49 @@
         font-weight: 600;
     }
 
-    body.dark .review-hero {
-        background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.08) 0%, transparent 40%),
+    /* Dark Mode System */
+    html.dark-theme .review-hero,
+    [data-theme="dark"] .review-hero,
+    body.dark .review-hero,
+    body.dark-theme .review-hero {
+        background: radial-gradient(circle at 10% 20%, rgba(0, 122, 85, 0.08) 0%, transparent 40%),
                     radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.1) 0%, transparent 45%),
                     linear-gradient(135deg, #070b14 0%, #0f172a 100%) !important;
     }
-    body.dark .review-card {
-        background: #111827 !important;
-        border-color: #1f2937 !important;
-    }
-    body.dark .review-option {
+    html.dark-theme .review-card,
+    [data-theme="dark"] .review-card,
+    body.dark .review-card,
+    body.dark-theme .review-card {
         background: #1e293b !important;
         border-color: #334155 !important;
-        color: #e2e8f0 !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
     }
-    body.dark .review-option.is-correct {
-        background: #064e3b !important;
-        border-color: #059669 !important;
-        color: #a7f3d0 !important;
-    }
-    body.dark .text-dark-title {
+    html.dark-theme .review-option,
+    [data-theme="dark"] .review-option,
+    body.dark .review-option,
+    body.dark-theme .review-option {
+        background: #0f172a !important;
+        border-color: #334155 !important;
         color: #f1f5f9 !important;
     }
-    body.dark .text-dark-muted {
+    html.dark-theme .review-option.is-correct,
+    [data-theme="dark"] .review-option.is-correct,
+    body.dark .review-option.is-correct,
+    body.dark-theme .review-option.is-correct {
+        background: rgba(16, 185, 129, 0.18) !important;
+        border-color: #10b981 !important;
+        color: #a7f3d0 !important;
+    }
+    html.dark-theme .text-dark-title,
+    [data-theme="dark"] .text-dark-title,
+    body.dark .text-dark-title,
+    body.dark-theme .text-dark-title {
+        color: #f8fafc !important;
+    }
+    html.dark-theme .text-dark-muted,
+    [data-theme="dark"] .text-dark-muted,
+    body.dark .text-dark-muted,
+    body.dark-theme .text-dark-muted {
         color: #94a3b8 !important;
     }
 </style>
@@ -72,12 +92,12 @@
                 <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
                 <li><a href="{{ route('practice_quiz.index') }}" style="color: #94a3b8; text-decoration: none;">Practice Quizzes</a></li>
                 <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                <li style="color: #03c6bb; font-weight: 600;">Review Questions</li>
+                <li style="color: #007A55; font-weight: 600;">Review Questions</li>
             </ul>
         </nav>
         <div class="row align-items-center">
             <div class="col-lg-8 col-12">
-                <span class="badge rounded-pill mb-2" style="background: rgba(3, 198, 187, 0.15); border: 1px solid rgba(3, 198, 187, 0.3); color: #03c6bb; padding: 6px 14px; font-weight: 600;">
+                <span class="badge rounded-pill mb-2" style="background: rgba(0, 122, 85, 0.15); border: 1px solid rgba(0, 122, 85, 0.3); color: #007A55; padding: 6px 14px; font-weight: 600;">
                     Study & Review Mode
                 </span>
                 <h1 style="font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; color: #ffffff;">
@@ -96,7 +116,7 @@
     </div>
 </div>
 
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 30px; padding-bottom: 45px;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-12">
@@ -109,7 +129,7 @@
                                 Question {{ $index + 1 }}
                             </span>
                             <span class="badge {{ $sq->is_mastered ? 'badge-success' : 'badge-warning' }}" style="font-size: 12px;">
-                                {{ $sq->is_mastered ? '✔ Mastered (' . $sq->correct_count . 'x)' : 'Learning (' . $sq->correct_count . '/' . $session->quiz->target_repetitions . ')' }}
+                                {{ $sq->is_mastered ? '✔ Mastered (' . $sq->correct_count . 'x in a row)' : 'Learning (' . $sq->correct_count . '/' . $session->quiz->target_repetitions . ' streak)' }}
                             </span>
                         </div>
 
@@ -145,8 +165,8 @@
                         </div>
 
                         @if(!empty($q->explanation))
-                            <div class="p-3 rounded-3 mt-3" style="background: rgba(3, 198, 187, 0.08); border-left: 4px solid #03c6bb;">
-                                <div class="small font-weight-bold mb-1" style="color: #009e95;">
+                            <div class="p-3 rounded-3 mt-3" style="background: rgba(0, 122, 85, 0.08); border-left: 4px solid #007A55;">
+                                <div class="small font-weight-bold mb-1" style="color: #005a3e;">
                                     <i class="feather-info"></i> Explanation / Discussion:
                                 </div>
                                 <div class="text-dark-title small" style="line-height: 1.6;">
