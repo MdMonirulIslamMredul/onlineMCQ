@@ -353,6 +353,8 @@ class PracticeQuizController extends Controller
             }
         } else {
             $sessionQ->incorrect_count += 1;
+            // Reset consecutive correct streak back to 0 so the student must answer correctly in a row
+            $sessionQ->correct_count = 0;
         }
 
         $sessionQ->last_answered_at = Carbon::now();
