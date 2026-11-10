@@ -70,12 +70,12 @@
                                                     </div>
                                                      
                                                      <div>
-                                                        {{-- <form action="{{ route('cms.delete.exam', $exam->id) }}" method="POST" style="display:inline;">
+                                                        <form action="{{ route('cms.delete.exam', $exam->exam_id) }}" method="POST" style="display:inline;">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger btn-sm"
-                                                                onclick="return confirm('Are you sure you want to delete this teacher?')">Delete</button>
-                                                        </form> --}}
+                                                                onclick="return confirm('Are you sure you want to delete this exam?')">Delete</button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </td>
