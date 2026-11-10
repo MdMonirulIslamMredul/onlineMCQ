@@ -8,7 +8,7 @@ $isUnlocked = (!empty($ordersInfo->id) || $catInfo->free_paid == 'free');
 @endphp
 
 <!-- Start Hero / Breadcrumb Area -->
-<div class="student-hero" style="padding: 60px 0 70px;">
+<div class="student-hero" style="padding: 32px 0 36px;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 col-md-12">
@@ -18,7 +18,7 @@ $isUnlocked = (!empty($ordersInfo->id) || $catInfo->free_paid == 'free');
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
                         <li><a href="{{ route('all.courses') }}" style="color: #94a3b8; text-decoration: none;">Exams</a></li>
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">{{ $catInfo->name }}</li>
+                        <li style="color: #007A55; font-weight: 600;">{{ $catInfo->name }}</li>
                     </ul>
                 </nav>
                 <div class="student-hero-badge">
@@ -80,7 +80,7 @@ $isUnlocked = (!empty($ordersInfo->id) || $catInfo->free_paid == 'free');
 <!-- End Hero Area -->
 
 <!-- Start Exams Listing Area -->
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 30px; padding-bottom: 45px;">
     <div class="container">
         <div class="row g-5">
             <!-- MCQ Exams Column -->
@@ -88,11 +88,11 @@ $isUnlocked = (!empty($ordersInfo->id) || $catInfo->free_paid == 'free');
                 <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
                     <div>
                         <h3 class="mb-1" style="font-size: 22px; font-weight: 700; color: #0f172a;">
-                            <i class="feather-check-square me-2" style="color: #03c6bb;"></i> MCQ Practice Exams
+                            <i class="feather-check-square me-2" style="color: #007A55;"></i> MCQ Practice Exams
                         </h3>
                         <p class="text-muted mb-0" style="font-size: 14px;">Timed interactive multiple-choice tests</p>
                     </div>
-                    <span class="badge" style="background: rgba(3, 198, 187, 0.12); color: #03c6bb; font-weight: 700; padding: 6px 14px; border-radius: 9999px;">
+                    <span class="badge" style="background: rgba(0, 122, 85, 0.12); color: #007A55; font-weight: 700; padding: 6px 14px; border-radius: 9999px;">
                         {{ $MCQexams->count() }} Available
                     </span>
                 </div>
@@ -106,7 +106,7 @@ $isUnlocked = (!empty($ordersInfo->id) || $catInfo->free_paid == 'free');
                         <div class="p-3 rounded-4 transition-all" style="background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.25s ease;">
                             <div class="d-flex align-items-center justify-content-between gap-3">
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 46px; height: 46px; background: rgba(3, 198, 187, 0.1); color: #03c6bb; font-size: 20px;">
+                                    <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 46px; height: 46px; background: rgba(0, 122, 85, 0.1); color: #007A55; font-size: 20px;">
                                         <i class="feather-file-text"></i>
                                     </div>
                                     <div>
