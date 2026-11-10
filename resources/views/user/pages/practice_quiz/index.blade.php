@@ -3,7 +3,7 @@
 @push('test_style')
 <style>
     .practice-hero {
-        background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.15) 0%, transparent 40%),
+        background: radial-gradient(circle at 10% 20%, rgba(0, 122, 85, 0.15) 0%, transparent 40%),
                     radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.18) 0%, transparent 45%),
                     linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         padding: 55px 0 65px;
@@ -25,7 +25,7 @@
     .practice-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        border-color: #03c6bb;
+        border-color: #007A55;
     }
     .practice-badge-game {
         background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
@@ -48,7 +48,7 @@
     }
     .practice-progress-fill {
         height: 100%;
-        background: linear-gradient(90deg, #03c6bb 0%, #4f46e5 100%);
+        background: linear-gradient(90deg, #007A55 0%, #4f46e5 100%);
         border-radius: 10px;
         transition: width 0.4s ease;
     }
@@ -56,48 +56,48 @@
     /* Practice Card Action Buttons */
     .btn-practice-start {
         background: transparent;
-        border: 2px solid #03c6bb;
-        color: #009e95;
+        border: 2px solid #007A55;
+        color: #005a3e;
         font-weight: 700;
         transition: all 0.25s ease;
         text-decoration: none;
     }
     .btn-practice-start:hover, .btn-practice-start:focus {
-        background: linear-gradient(135deg, #03c6bb 0%, #4f46e5 100%) !important;
+        background: linear-gradient(135deg, #007A55 0%, #4f46e5 100%) !important;
         border-color: transparent !important;
         color: #ffffff !important;
-        box-shadow: 0 8px 18px rgba(3, 198, 187, 0.35);
+        box-shadow: 0 8px 18px rgba(0, 122, 85, 0.35);
         transform: translateY(-2px);
     }
     .btn-practice-resume {
-        background: linear-gradient(135deg, #03c6bb 0%, #4f46e5 100%);
+        background: linear-gradient(135deg, #007A55 0%, #4f46e5 100%);
         border: 2px solid transparent;
         color: #ffffff !important;
         font-weight: 700;
         transition: all 0.25s ease;
         text-decoration: none;
-        box-shadow: 0 4px 12px rgba(3, 198, 187, 0.25);
+        box-shadow: 0 4px 12px rgba(0, 122, 85, 0.25);
     }
     .btn-practice-resume:hover, .btn-practice-resume:focus {
         background: linear-gradient(135deg, #02b0a6 0%, #3e38c7 100%) !important;
         color: #ffffff !important;
-        box-shadow: 0 8px 20px rgba(3, 198, 187, 0.4);
+        box-shadow: 0 8px 20px rgba(0, 122, 85, 0.4);
         transform: translateY(-2px);
     }
     .btn-practice-again {
-        background: #03c6bb;
-        border: 2px solid #03c6bb;
+        background: #007A55;
+        border: 2px solid #007A55;
         color: #ffffff !important;
         font-weight: 700;
         transition: all 0.25s ease;
         text-decoration: none;
-        box-shadow: 0 4px 12px rgba(3, 198, 187, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 122, 85, 0.2);
     }
     .btn-practice-again:hover, .btn-practice-again:focus {
-        background: #009e95 !important;
-        border-color: #009e95 !important;
+        background: #005a3e !important;
+        border-color: #005a3e !important;
         color: #ffffff !important;
-        box-shadow: 0 8px 18px rgba(3, 198, 187, 0.35);
+        box-shadow: 0 8px 18px rgba(0, 122, 85, 0.35);
         transform: translateY(-2px);
     }
     .btn-practice-review {
@@ -108,9 +108,9 @@
         transition: all 0.2s ease;
     }
     .btn-practice-review:hover, .btn-practice-review:focus {
-        border-color: #03c6bb;
-        color: #009e95 !important;
-        background: rgba(3, 198, 187, 0.08);
+        border-color: #007A55;
+        color: #005a3e !important;
+        background: rgba(0, 122, 85, 0.08);
     }
     .practice-history-pill {
         background: rgba(245, 158, 11, 0.08);
@@ -125,56 +125,100 @@
         margin-bottom: 14px;
     }
 
-    /* Dark Mode Styles */
-    body.dark .practice-hero {
-        background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.08) 0%, transparent 40%),
+    /* Dark Mode System */
+    html.dark-theme .practice-hero,
+    [data-theme="dark"] .practice-hero,
+    body.dark .practice-hero,
+    body.dark-theme .practice-hero {
+        background: radial-gradient(circle at 10% 20%, rgba(0, 122, 85, 0.08) 0%, transparent 40%),
                     radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.1) 0%, transparent 45%),
                     linear-gradient(135deg, #070b14 0%, #0f172a 100%) !important;
     }
-    body.dark .practice-card {
-        background: #111827 !important;
-        border-color: #1f2937 !important;
+    html.dark-theme .practice-card,
+    [data-theme="dark"] .practice-card,
+    body.dark .practice-card,
+    body.dark-theme .practice-card {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
     }
-    body.dark .practice-card:hover {
-        border-color: #03c6bb !important;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4) !important;
+    html.dark-theme .practice-card:hover,
+    [data-theme="dark"] .practice-card:hover,
+    body.dark .practice-card:hover,
+    body.dark-theme .practice-card:hover {
+        border-color: #007A55 !important;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5) !important;
     }
-    body.dark .practice-progress-bar {
-        background: #1f2937 !important;
+    html.dark-theme .practice-progress-bar,
+    [data-theme="dark"] .practice-progress-bar,
+    body.dark .practice-progress-bar,
+    body.dark-theme .practice-progress-bar {
+        background: #0f172a !important;
     }
-    body.dark .text-dark-title {
-        color: #f1f5f9 !important;
+    html.dark-theme .text-dark-title,
+    [data-theme="dark"] .text-dark-title,
+    body.dark .text-dark-title,
+    body.dark-theme .text-dark-title {
+        color: #f8fafc !important;
     }
-    body.dark .text-dark-muted {
+    html.dark-theme .text-dark-muted,
+    [data-theme="dark"] .text-dark-muted,
+    body.dark .text-dark-muted,
+    body.dark-theme .text-dark-muted {
         color: #94a3b8 !important;
     }
-    body.dark .cat-pill {
+    html.dark-theme .cat-pill,
+    [data-theme="dark"] .cat-pill,
+    body.dark .cat-pill,
+    body.dark-theme .cat-pill {
         background: #1e293b !important;
         border-color: #334155 !important;
         color: #cbd5e1 !important;
     }
-    body.dark .cat-pill.active, body.dark .cat-pill:hover {
-        background: #03c6bb !important;
+    html.dark-theme .cat-pill.active,
+    html.dark-theme .cat-pill:hover,
+    [data-theme="dark"] .cat-pill.active,
+    [data-theme="dark"] .cat-pill:hover,
+    body.dark .cat-pill.active,
+    body.dark .cat-pill:hover,
+    body.dark-theme .cat-pill.active,
+    body.dark-theme .cat-pill:hover {
+        background: #007A55 !important;
         color: #ffffff !important;
-        border-color: #03c6bb !important;
+        border-color: #007A55 !important;
     }
-    body.dark .btn-practice-start {
-        border-color: #03c6bb;
-        color: #03c6bb;
+    html.dark-theme .btn-practice-start,
+    [data-theme="dark"] .btn-practice-start,
+    body.dark .btn-practice-start,
+    body.dark-theme .btn-practice-start {
+        border-color: #007A55;
+        color: #007A55;
     }
-    body.dark .btn-practice-start:hover {
+    html.dark-theme .btn-practice-start:hover,
+    [data-theme="dark"] .btn-practice-start:hover,
+    body.dark .btn-practice-start:hover,
+    body.dark-theme .btn-practice-start:hover {
         color: #ffffff !important;
     }
-    body.dark .btn-practice-review {
+    html.dark-theme .btn-practice-review,
+    [data-theme="dark"] .btn-practice-review,
+    body.dark .btn-practice-review,
+    body.dark-theme .btn-practice-review {
         background: #1e293b;
         border-color: #334155;
         color: #94a3b8;
     }
-    body.dark .btn-practice-review:hover {
-        border-color: #03c6bb;
-        color: #03c6bb !important;
+    html.dark-theme .btn-practice-review:hover,
+    [data-theme="dark"] .btn-practice-review:hover,
+    body.dark .btn-practice-review:hover,
+    body.dark-theme .btn-practice-review:hover {
+        border-color: #007A55;
+        color: #007A55 !important;
     }
-    body.dark .practice-history-pill {
+    html.dark-theme .practice-history-pill,
+    [data-theme="dark"] .practice-history-pill,
+    body.dark .practice-history-pill,
+    body.dark-theme .practice-history-pill {
         background: rgba(245, 158, 11, 0.12);
         border-color: rgba(245, 158, 11, 0.3);
         color: #fbbf24;
@@ -192,10 +236,10 @@
                     <ul class="d-flex align-items-center gap-2 p-0 mb-3" style="list-style: none; font-size: 14px;">
                         <li><a href="{{ route('/') }}" style="color: #94a3b8; text-decoration: none;">Home</a></li>
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">Preparation Quiz Game</li>
+                        <li style="color: #007A55; font-weight: 600;">Preparation Quiz Game</li>
                     </ul>
                 </nav>
-                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(3, 198, 187, 0.15); border: 1px solid rgba(3, 198, 187, 0.3); font-size: 13px; font-weight: 600; color: #03c6bb;">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(0, 122, 85, 0.15); border: 1px solid rgba(0, 122, 85, 0.3); font-size: 13px; font-weight: 600; color: #007A55;">
                     <i class="feather-zap"></i> Spaced-Repetition Active Recall
                 </div>
                 <h1 class="mb-2" style="font-size: clamp(28px, 4vw, 42px); font-weight: 800; color: #ffffff;">
@@ -208,7 +252,7 @@
             <div class="col-lg-4 col-12 mt-4 mt-lg-0 text-lg-end">
                 <div class="p-3 rounded-4 d-inline-block text-start" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px);">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: linear-gradient(135deg, #03c6bb, #4f46e5); color: #fff; font-size: 24px;">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; background: linear-gradient(135deg, #007A55, #4f46e5); color: #fff; font-size: 24px;">
                             🎯
                         </div>
                         <div>
@@ -223,17 +267,17 @@
 </div>
 
 <!-- Main Section -->
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 30px; padding-bottom: 45px;">
     <div class="container">
         <!-- Filter Tabs & Search -->
         <div class="row mb-5 align-items-center g-3">
             <div class="col-lg-8 col-12">
                 <div class="d-flex flex-wrap gap-2 align-items-center">
-                    <a href="{{ route('practice_quiz.index') }}" class="btn btn-sm rounded-pill px-3 py-2 cat-pill {{ empty($catId) ? 'active' : '' }}" style="{{ empty($catId) ? 'background: #03c6bb; color: #fff; font-weight: 700;' : 'background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;' }}">
+                    <a href="{{ route('practice_quiz.index') }}" class="btn btn-sm rounded-pill px-3 py-2 cat-pill {{ empty($catId) ? 'active' : '' }}" style="{{ empty($catId) ? 'background: #007A55; color: #fff; font-weight: 700;' : 'background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;' }}">
                         All Topics
                     </a>
                     @foreach($categories as $category)
-                        <a href="{{ route('practice_quiz.index', ['cat' => $category->id]) }}" class="btn btn-sm rounded-pill px-3 py-2 cat-pill {{ $catId == $category->id ? 'active' : '' }}" style="{{ $catId == $category->id ? 'background: #03c6bb; color: #fff; font-weight: 700;' : 'background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;' }}">
+                        <a href="{{ route('practice_quiz.index', ['cat' => $category->id]) }}" class="btn btn-sm rounded-pill px-3 py-2 cat-pill {{ $catId == $category->id ? 'active' : '' }}" style="{{ $catId == $category->id ? 'background: #007A55; color: #fff; font-weight: 700;' : 'background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;' }}">
                             {{ $category->cat_name ?? $category->name }}
                         </a>
                     @endforeach
@@ -269,7 +313,7 @@
                                 <i class="feather-award"></i> {{ $quiz->target_repetitions }}x Mastery Game
                             </span>
                             @if($quiz->category)
-                                <span class="badge rounded-pill text-muted" style="background: rgba(3, 198, 187, 0.1); color: #009e95 !important; font-weight: 600; font-size: 12px; padding: 6px 12px;">
+                                <span class="badge rounded-pill text-muted" style="background: rgba(0, 122, 85, 0.1); color: #005a3e !important; font-weight: 600; font-size: 12px; padding: 6px 12px;">
                                     {{ $quiz->category->cat_name ?? $quiz->category->name }}
                                 </span>
                             @endif
@@ -302,7 +346,7 @@
                         @if($hasActive)
                             <div class="mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="small font-weight-bold" style="font-size: 12px; color: #03c6bb;">
+                                    <span class="small font-weight-bold" style="font-size: 12px; color: #007A55;">
                                         <i class="feather-clock me-1"></i> In Progress ({{ $activeSession->mastered_questions }}/{{ $activeSession->total_questions }} mastered)
                                     </span>
                                     <span class="small font-weight-bold text-dark-title" style="font-size: 12px;">
