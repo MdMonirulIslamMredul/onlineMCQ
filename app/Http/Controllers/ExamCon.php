@@ -11,6 +11,108 @@ use App\Models\CourseModule;
 
 class ExamCon extends Controller
 {
+    // Helper to attach stats and counts
+    private function attachExamStats($exams) {
+        $examIds = $exams->pluck('exam_id')->toArray();
+        if (empty($examIds)) {
+            return $exams;
+        }
+
+        $mcqStats = DB::table('mcq_questions')
+            ->whereIn('examID', $examIds)
+            ->select('examID', DB::raw('COUNT(*) as total_questions'), DB::raw('SUM(mark) as total_marks'))
+            ->groupBy('examID')
+            ->get()
+            ->keyBy('examID');
+
+        $writtenStats = DB::table('written_questions')
+            ->whereIn('examID', $examIds)
+            ->select('examID', DB::raw('COUNT(*) as total_questions'), DB::raw('SUM(mark) as total_marks'))
+            ->groupBy('examID')
+            ->get()
+            ->keyBy('examID');
+
+        foreach ($exams as $exam) {
+            if ($exam->mcq_written == 'mcq') {
+                $stat = $mcqStats->get($exam->exam_id);
+            } else {
+                $stat = $writtenStats->get($exam->exam_id);
+            }
+            $exam->total_questions = $stat ? ($stat->total_questions ?? 0) : 0;
+            $exam->total_marks = $stat ? ($stat->total_marks ?? 0) : 0;
+        }
+
+        return $exams;
+    }
+
+    // All Exams (MCQ & Written)
+    public function indexAll(){
+        $exams = DB::table('exams')
+            ->leftJoin('categories', 'exams.catID', 'categories.id')
+            ->select('exams.*', 'categories.name as cat_name', 'categories.name as name', 'categories.free_paid as cat_free_paid', 'categories.free_paid as free_paid', 'exams.id as exam_id', 'exams.active as exam_active')
+            ->orderBy('exams.id', 'DESC')
+            ->get();
+        $exams = $this->attachExamStats($exams);
+
+        $counts = [
+            'all' => DB::table('exams')->count(),
+            'mcq' => DB::table('exams')->where('mcq_written', 'mcq')->count(),
+            'written' => DB::table('exams')->where('mcq_written', 'written')->count(),
+            'permanent' => DB::table('exams')->where('type', 'permanent')->count(),
+            'temporary' => DB::table('exams')->where('type', 'temporary')->count(),
+        ];
+
+        $pageTitle = "All Exams (MCQ & Written)";
+        $activeTab = "all";
+        return view('cms.exam.all_exams', compact('exams', 'pageTitle', 'activeTab', 'counts'));
+    }
+
+    // All MCQ Exams
+    public function indexMCQ(){
+        $exams = DB::table('exams')
+            ->leftJoin('categories', 'exams.catID', 'categories.id')
+            ->select('exams.*', 'categories.name as cat_name', 'categories.name as name', 'categories.free_paid as cat_free_paid', 'categories.free_paid as free_paid', 'exams.id as exam_id', 'exams.active as exam_active')
+            ->where('exams.mcq_written', 'mcq')
+            ->orderBy('exams.id', 'DESC')
+            ->get();
+        $exams = $this->attachExamStats($exams);
+
+        $counts = [
+            'all' => DB::table('exams')->count(),
+            'mcq' => DB::table('exams')->where('mcq_written', 'mcq')->count(),
+            'written' => DB::table('exams')->where('mcq_written', 'written')->count(),
+            'permanent' => DB::table('exams')->where('type', 'permanent')->count(),
+            'temporary' => DB::table('exams')->where('type', 'temporary')->count(),
+        ];
+
+        $pageTitle = "All MCQ Exams";
+        $activeTab = "mcq";
+        return view('cms.exam.all_exams', compact('exams', 'pageTitle', 'activeTab', 'counts'));
+    }
+
+    // All Written Exams
+    public function indexWritten(){
+        $exams = DB::table('exams')
+            ->leftJoin('categories', 'exams.catID', 'categories.id')
+            ->select('exams.*', 'categories.name as cat_name', 'categories.name as name', 'categories.free_paid as cat_free_paid', 'categories.free_paid as free_paid', 'exams.id as exam_id', 'exams.active as exam_active')
+            ->where('exams.mcq_written', 'written')
+            ->orderBy('exams.id', 'DESC')
+            ->get();
+        $exams = $this->attachExamStats($exams);
+
+        $counts = [
+            'all' => DB::table('exams')->count(),
+            'mcq' => DB::table('exams')->where('mcq_written', 'mcq')->count(),
+            'written' => DB::table('exams')->where('mcq_written', 'written')->count(),
+            'permanent' => DB::table('exams')->where('type', 'permanent')->count(),
+            'temporary' => DB::table('exams')->where('type', 'temporary')->count(),
+        ];
+
+        $pageTitle = "All Written Exams";
+        $activeTab = "written";
+        return view('cms.exam.all_exams', compact('exams', 'pageTitle', 'activeTab', 'counts'));
+    }
+
     // Exam index page
     public function indexParment(){
         $exams = DB::table('exams')
@@ -118,6 +220,9 @@ class ExamCon extends Controller
         $data['created_at'] = Carbon::now();
 
         DB::table('exams')->where('id', $id)->update($data);
+        if ($request->filled('redirect_to')) {
+            return redirect($request->redirect_to)->with('status', 'Exam Updated Successfully');
+        }
         if($request->type != 'temporary') {
             return Redirect()->route('cms.permanent_exams')->with('status', 'Exam Update Successfully');
         }
@@ -127,12 +232,9 @@ class ExamCon extends Controller
     }
 
     public function DeleteExams($id) {
-        // dd($id);
-        // Retrieve the teacher record to get the image path
-        DB::table('exams')->where('id', $id)->first();
-
+        DB::table('mcq_questions')->where('examID', $id)->delete();
+        DB::table('written_questions')->where('examID', $id)->delete();
         DB::table('exams')->where('id', $id)->delete();
-        
 
         return redirect()->back()->with('status', 'Exam Deleted Successfully');
     }
