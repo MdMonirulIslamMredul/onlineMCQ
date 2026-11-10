@@ -3,7 +3,7 @@
 @push('test_style')
 <style>
     .quiz-detail-hero {
-        background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.15) 0%, transparent 40%),
+        background: radial-gradient(circle at 10% 20%, rgba(0, 122, 85, 0.15) 0%, transparent 40%),
                     radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.18) 0%, transparent 45%),
                     linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         padding: 55px 0 65px;
@@ -31,19 +31,33 @@
         margin-bottom: 16px;
     }
 
-    body.dark .quiz-detail-hero {
-        background: radial-gradient(circle at 10% 20%, rgba(3, 198, 187, 0.08) 0%, transparent 40%),
+    /* Dark Mode System */
+    html.dark-theme .quiz-detail-hero,
+    [data-theme="dark"] .quiz-detail-hero,
+    body.dark .quiz-detail-hero,
+    body.dark-theme .quiz-detail-hero {
+        background: radial-gradient(circle at 10% 20%, rgba(0, 122, 85, 0.08) 0%, transparent 40%),
                     radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.1) 0%, transparent 45%),
                     linear-gradient(135deg, #070b14 0%, #0f172a 100%) !important;
     }
-    body.dark .rule-card {
-        background: #111827 !important;
-        border-color: #1f2937 !important;
+    html.dark-theme .rule-card,
+    [data-theme="dark"] .rule-card,
+    body.dark .rule-card,
+    body.dark-theme .rule-card {
+        background: #1e293b !important;
+        border-color: #334155 !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
     }
-    body.dark .text-dark-title {
-        color: #f1f5f9 !important;
+    html.dark-theme .text-dark-title,
+    [data-theme="dark"] .text-dark-title,
+    body.dark .text-dark-title,
+    body.dark-theme .text-dark-title {
+        color: #f8fafc !important;
     }
-    body.dark .text-dark-muted {
+    html.dark-theme .text-dark-muted,
+    [data-theme="dark"] .text-dark-muted,
+    body.dark .text-dark-muted,
+    body.dark-theme .text-dark-muted {
         color: #94a3b8 !important;
     }
 </style>
@@ -58,13 +72,13 @@
                 <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
                 <li><a href="{{ route('practice_quiz.index') }}" style="color: #94a3b8; text-decoration: none;">Practice Quizzes</a></li>
                 <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                <li style="color: #03c6bb; font-weight: 600;">{{ $quiz->title }}</li>
+                <li style="color: #007A55; font-weight: 600;">{{ $quiz->title }}</li>
             </ul>
         </nav>
 
         <div class="row align-items-center">
             <div class="col-lg-8 col-12">
-                <span class="badge rounded-pill mb-3" style="background: rgba(3, 198, 187, 0.15); border: 1px solid rgba(3, 198, 187, 0.3); color: #03c6bb; padding: 6px 14px; font-weight: 600;">
+                <span class="badge rounded-pill mb-3" style="background: rgba(0, 122, 85, 0.15); border: 1px solid rgba(0, 122, 85, 0.3); color: #007A55; padding: 6px 14px; font-weight: 600;">
                     {{ $quiz->category ? ($quiz->category->cat_name ?? $quiz->category->name) : 'General Practice' }}
                 </span>
                 <h1 style="font-size: clamp(28px, 4vw, 42px); font-weight: 800; color: #ffffff; line-height: 1.3;" class="mb-3">
@@ -96,10 +110,10 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <span class="small font-weight-bold text-white">Your Progress</span>
-                                <span class="small font-weight-bold" style="color: #03c6bb;">{{ $userSession->progress_percent }}%</span>
+                                <span class="small font-weight-bold" style="color: #007A55;">{{ $userSession->progress_percent }}%</span>
                             </div>
                             <div class="progress" style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                                <div class="progress-bar" style="width: {{ $userSession->progress_percent }}%; background: linear-gradient(90deg, #03c6bb, #4f46e5); border-radius: 10px;"></div>
+                                <div class="progress-bar" style="width: {{ $userSession->progress_percent }}%; background: linear-gradient(90deg, #007A55, #4f46e5); border-radius: 10px;"></div>
                             </div>
                             <div class="text-muted small mt-2">
                                 {{ $userSession->mastered_questions }} of {{ $userSession->total_questions }} questions mastered
@@ -117,7 +131,7 @@
                                 <i class="feather-book-open"></i> Review All Explanations
                             </a>
                         @else
-                            <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-gradient rounded-pill w-100 py-3 font-weight-bold" style="background: linear-gradient(90deg, #03c6bb, #4f46e5);">
+                            <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-gradient rounded-pill w-100 py-3 font-weight-bold" style="background: linear-gradient(90deg, #007A55, #4f46e5);">
                                 <i class="feather-play"></i> Resume Practice Now
                             </a>
                         @endif
@@ -143,7 +157,7 @@
                     @else
                         <h5 class="text-white mb-2">Ready to Prepare?</h5>
                         <p class="text-muted small mb-4">No time pressure or negative marks. Learn through repetition until 100% mastered.</p>
-                        <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-gradient rounded-pill w-100 py-3 font-weight-bold" style="background: linear-gradient(90deg, #03c6bb, #4f46e5); font-size: 16px;">
+                        <a href="{{ route('practice_quiz.start', $quiz->id) }}" class="btn btn-gradient rounded-pill w-100 py-3 font-weight-bold" style="background: linear-gradient(90deg, #007A55, #4f46e5); font-size: 16px;">
                             <i class="feather-play-circle"></i> Start Preparation Game
                         </a>
                     @endif
@@ -153,7 +167,7 @@
     </div>
 </div>
 
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 30px; padding-bottom: 45px;">
     <div class="container">
         <h3 class="text-dark-title text-center mb-2" style="font-weight: 800;">How the Mastery System Works</h3>
         <p class="text-dark-muted text-center mb-5" style="max-width: 600px; margin-inline: auto;">
@@ -163,7 +177,7 @@
         <div class="row g-4">
             <div class="col-md-4 col-12">
                 <div class="rule-card text-center">
-                    <div class="rule-icon mx-auto" style="background: rgba(3, 198, 187, 0.1); color: #009e95;">
+                    <div class="rule-icon mx-auto" style="background: rgba(0, 122, 85, 0.1); color: #005a3e;">
                         <i class="feather-eye"></i>
                     </div>
                     <h5 class="text-dark-title mb-2" style="font-weight: 700;">1 Question at a Time</h5>
