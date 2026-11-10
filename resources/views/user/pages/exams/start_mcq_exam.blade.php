@@ -37,7 +37,7 @@ if ($examType == 'permanent') {
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 py-1">
             <div class="d-flex align-items-center gap-3">
-                <div class="d-none d-sm-flex align-items-center justify-content-center rounded-circle" style="width: 42px; height: 42px; background: rgba(3, 198, 187, 0.12); color: #03c6bb; font-size: 18px;">
+                <div class="d-none d-sm-flex align-items-center justify-content-center rounded-circle" style="width: 42px; height: 42px; background: rgba(0, 122, 85, 0.12); color: #007A55; font-size: 18px;">
                     <i class="feather-edit-3"></i>
                 </div>
                 <div>
@@ -45,7 +45,7 @@ if ($examType == 'permanent') {
                         {{ $examInfo->exam_name ?? 'MCQ Examination' }}
                     </h5>
                     <span class="text-muted" style="font-size: 13px;">
-                        Total Questions: <strong style="color: #03c6bb;">{{ count($questions) }}</strong>
+                        Total Questions: <strong style="color: #007A55;">{{ count($questions) }}</strong>
                     </span>
                 </div>
             </div>
@@ -54,7 +54,7 @@ if ($examType == 'permanent') {
             <div class="d-flex align-items-center gap-3">
                 <!-- Countdown Timer -->
                 <div id="clockdiv" class="d-flex align-items-center gap-1 p-2 rounded-3" style="background: #0f172a; color: #ffffff; font-family: var(--font-heading); font-weight: 700;">
-                    <i class="feather-clock ms-2 me-1" style="color: #03c6bb; font-size: 18px; animation: pulse 1.5s infinite;"></i>
+                    <i class="feather-clock ms-2 me-1" style="color: #007A55; font-size: 18px; animation: pulse 1.5s infinite;"></i>
                     <div class="px-2 py-1 rounded text-center" style="background: #1e293b; min-width: 36px;">
                         <span class="hours" style="font-size: 16px; color: #38bdf8;">00</span>
                         <div style="font-size: 9px; color: #94a3b8; text-transform: uppercase;">Hrs</div>
@@ -82,7 +82,7 @@ if ($examType == 'permanent') {
     </div>
 </div>
 
-<div class="rbt-section-gapTop pb--80 bg-color-white" style="min-height: 80vh;">
+<div class="bg-color-white py-4" style="min-height: 80vh;">
     <div class="container">
         @if($startStatus == 1)
             <input type="hidden" id="examTime" value="{{ $examTime }}">
