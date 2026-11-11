@@ -16,3 +16,15 @@ yarn-error.log
 # /public/uploads
 *.zip
 upd/
+/public/favicon.*
+/public/favicon.ico
+/public/images/
+/public/frontend/assets/images/
+/public/backend/app-assets/images/logo/
+/public/backend/assets/img/logo.*
+/public/frontend11/assets/img/*logo*
+/public/uploads/books/
+/public/uploads/payments/
+
+
+
