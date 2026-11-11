@@ -16,7 +16,7 @@
     .modern-blog-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        border-color: #03c6bb;
+        border-color: #007A55;
     }
     .modern-blog-thumb {
         height: 220px;
@@ -49,7 +49,7 @@
         transition: color 0.2s ease;
     }
     .modern-blog-card:hover .modern-blog-title {
-        color: #03c6bb;
+        color: #007A55;
     }
     .modern-blog-desc {
         color: #64748b;
@@ -63,7 +63,7 @@
 
 @section('content')
 <!-- Start Hero Banner -->
-<div class="student-hero" style="padding: 55px 0 65px;">
+<div class="student-hero" style="padding: 32px 0 36px;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 col-12">
@@ -71,7 +71,7 @@
                     <ul class="d-flex align-items-center gap-2 p-0 mb-3" style="list-style: none; font-size: 14px;">
                         <li><a href="{{ route('/') }}" style="color: #94a3b8; text-decoration: none;">Home</a></li>
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">Blog & Articles</li>
+                        <li style="color: #007A55; font-weight: 600;">Blog & Articles</li>
                     </ul>
                 </nav>
                 <div class="student-hero-badge">
@@ -85,7 +85,7 @@
                 </p>
             </div>
             <div class="col-lg-4 col-12 mt-4 mt-lg-0 text-lg-end">
-                <span class="badge px-3 py-2 rounded-pill" style="background: rgba(3, 198, 187, 0.15); color: #03c6bb; font-weight: 700; font-size: 14px;">
+                <span class="badge px-3 py-2 rounded-pill" style="background: rgba(0, 122, 85, 0.15); color: #007A55; font-weight: 700; font-size: 14px;">
                     🎉 {{ $blogs->total() ?? $blogs->count() }} Articles Published
                 </span>
             </div>
@@ -95,7 +95,7 @@
 <!-- End Hero Banner -->
 
 <!-- Blog Listing Section -->
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 32px; padding-bottom: 48px;">
     <div class="container">
         @if($blogs->count() > 0)
             <div class="row g-4">
@@ -112,7 +112,7 @@
                             </div>
                             <div class="modern-blog-body">
                                 <div class="d-flex align-items-center gap-2 mb-2 text-muted" style="font-size: 12px; font-weight: 600;">
-                                    <i class="feather-user text-primary" style="color: #03c6bb !important;"></i>
+                                    <i class="feather-user text-primary" style="color: #007A55 !important;"></i>
                                     <span>By {{ $blog->author ?: 'Academic Mentor' }}</span>
                                 </div>
                                 <h4 class="modern-blog-title">
@@ -124,7 +124,7 @@
                                     {{ Str::limit(strip_tags($blog->description), 110) }}
                                 </p>
                                 <div class="mt-auto pt-3 border-top">
-                                    <a href="{{ url('/blog/'.$blog->id.'/'.$blog->url) }}" class="rbt-btn-link d-flex align-items-center justify-content-between text-decoration-none" style="font-weight: 700; color: #03c6bb;">
+                                    <a href="{{ url('/blog/'.$blog->id.'/'.$blog->url) }}" class="rbt-btn-link d-flex align-items-center justify-content-between text-decoration-none" style="font-weight: 700; color: #007A55;">
                                         <span>Read Full Article</span>
                                         <i class="feather-arrow-right"></i>
                                     </a>
@@ -143,7 +143,7 @@
             @endif
         @else
             <div class="text-center py-5 px-4 rounded-4" style="background: #f8fafc; border: 2px dashed #e2e8f0;">
-                <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 72px; height: 72px; background: rgba(3, 198, 187, 0.1); color: #03c6bb; font-size: 32px;">
+                <div class="mb-3 mx-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 72px; height: 72px; background: rgba(0, 122, 85, 0.1); color: #007A55; font-size: 32px;">
                     <i class="feather-file-text"></i>
                 </div>
                 <h4 style="font-weight: 700; color: #0f172a;" class="mb-2">No Articles Available</h4>
