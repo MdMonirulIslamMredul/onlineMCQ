@@ -16,7 +16,7 @@
     .modern-blog-card:hover {
         transform: translateY(-6px);
         box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        border-color: #03c6bb;
+        border-color: #007A55;
     }
     .modern-blog-thumb {
         height: 220px;
@@ -49,7 +49,7 @@
         transition: color 0.2s ease;
     }
     .modern-blog-card:hover .modern-blog-title {
-        color: #03c6bb;
+        color: #007A55;
     }
     .modern-blog-desc {
         color: #64748b;
@@ -63,7 +63,7 @@
 
 @section('content')
 <!-- Start Hero Banner -->
-<div class="student-hero" style="padding: 55px 0 65px;">
+<div class="student-hero" style="padding: 32px 0 36px;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-8 col-12">
@@ -71,7 +71,7 @@
                     <ul class="d-flex align-items-center gap-2 p-0 mb-3" style="list-style: none; font-size: 14px;">
                         <li><a href="{{ route('/') }}" style="color: #94a3b8; text-decoration: none;">Home</a></li>
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">বাংলা ব্লগ ও প্রবন্ধ</li>
+                        <li style="color: #007A55; font-weight: 600;">বাংলা ব্লগ ও প্রবন্ধ</li>
                     </ul>
                 </nav>
                 <div class="student-hero-badge">
@@ -94,7 +94,7 @@
 </div>
 <!-- End Hero Banner -->
 
-<div class="rbt-section-gap bg-color-white">
+<div class="bg-color-white" style="padding-top: 32px; padding-bottom: 48px;">
     <div class="container">
         <div class="row g-4" id="blog_body">
             @foreach($blogs as $blog)
@@ -110,7 +110,7 @@
                         </div>
                         <div class="modern-blog-body">
                             <div class="d-flex align-items-center gap-2 mb-2 text-muted" style="font-size: 12px; font-weight: 600;">
-                                <i class="feather-user text-primary" style="color: #03c6bb !important;"></i>
+                                <i class="feather-user text-primary" style="color: #007A55 !important;"></i>
                                 <span>লেখক: {{ $blog->author ?: 'শিক্ষক প্যানেল' }}</span>
                             </div>
                             <h4 class="modern-blog-title">
@@ -122,7 +122,7 @@
                                 {{ Str::limit(strip_tags($blog->description), 110) }}
                             </p>
                             <div class="mt-auto pt-3 border-top">
-                                <a href="{{ url('/blog/'.$blog->id.'/'.$blog->url) }}" class="rbt-btn-link d-flex align-items-center justify-content-between text-decoration-none" style="font-weight: 700; color: #03c6bb;">
+                                <a href="{{ url('/blog/'.$blog->id.'/'.$blog->url) }}" class="rbt-btn-link d-flex align-items-center justify-content-between text-decoration-none" style="font-weight: 700; color: #007A55;">
                                     <span>সম্পূর্ণ পড়ুন</span>
                                     <i class="feather-arrow-right"></i>
                                 </a>
