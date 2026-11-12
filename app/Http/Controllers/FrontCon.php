@@ -81,7 +81,7 @@ class FrontCon extends Controller
     //Beging:: Course page
     public function course() {
 
-        $courses = DB::table('courses')->paginate(3);
+        $courses = DB::table('courses')->where('active', 1)->orderBy('rank', 'asc')->orderBy('id', 'desc')->get();
 
         return view('user.pages.extra.course_category', compact('courses'));
     }
@@ -649,9 +649,7 @@ class FrontCon extends Controller
 
     // Begin:: Books
     public function User_books() {
-        $books = DB::table('books')->orderBy('id', 'desc')->get();
-
-        return view('user.pages.extra.books', compact('books'));
+        return redirect()->route('shop');
     }
     public function User_shop() {
         $products = DB::table('books')->orderBy('id', 'desc')->paginate(8);
@@ -682,13 +680,22 @@ class FrontCon extends Controller
     }
     public function checkout1(Request $request) {
         $pid = $request->input('productID');
-        $quantity = $request->input('quantity'); // Default value if key does not exist
+        $quantity = $request->input('quantity', 1);
+        $book_type = $request->input('book_type', 'hardcopy');
     
         $product_info = DB::table('books')->where('id', $pid)->first();
         $userID = Cookie::get('user_id');
         $user_info = DB::table('users')->where('id', $userID)->first();
+
+        // Determine price based on selected book format
+        if ($book_type == 'softcopy' && !empty($product_info->softcopy_price)) {
+            $unit_price = $product_info->softcopy_price;
+            $quantity = 1; // 1 digital copy
+        } else {
+            $unit_price = $product_info->hardcopy_price ?: $product_info->price;
+        }
     
-        return view('user.pages.extra.checkout1', compact('pid', 'quantity', 'product_info', 'user_info'));
+        return view('user.pages.extra.checkout1', compact('pid', 'quantity', 'book_type', 'unit_price', 'product_info', 'user_info'));
     }
     public function buycourse() {
         $user = Cookie::get('user_id');
@@ -721,6 +728,8 @@ class FrontCon extends Controller
         $data['phone'] = $request->phone;
         $data['address'] = $request->address;
         $data['pid'] = $request->pid;
+        $data['user_id'] = Cookie::get('user_id');
+        $data['book_type'] = $request->book_type ?: 'hardcopy';
         $data['price'] = $request->price;
         $data['quantity'] = $request->quantity;
         $data['orderNum'] = $order_num;
@@ -745,6 +754,135 @@ class FrontCon extends Controller
         $orders_info = DB::table('books_order')->where('orderNum', $orderNum)->first();
 
         return view('user.pages.extra.order_info', compact('orders_info'));
+    }
+
+    // Protected Online Book Reading (Anti-Piracy)
+    public function readOnlineBook($id) {
+        $userId = Cookie::get('user_id');
+        if (!$userId) {
+            return redirect('/user-signin-singup')->with('adminError', 'Please sign in first to access your purchased books.');
+        }
+
+        $book = DB::table('books')->where('id', $id)->first();
+        if (!$book) {
+            return redirect()->route('shop')->with('error', 'Book not found.');
+        }
+
+        if (empty($book->pdf_file) || !file_exists(public_path($book->pdf_file))) {
+            return redirect()->back()->with('error', 'E-Book PDF is not yet available for this title. Please contact support.');
+        }
+
+        $user = DB::table('users')->where('id', $userId)->first();
+
+        // Verify that this student has purchased the softcopy
+        $hasPurchased = DB::table('books_order')
+            ->where('pid', $id)
+            ->where('book_type', 'softcopy')
+            ->where(function($q) use ($userId, $user) {
+                $q->where('user_id', $userId);
+                if ($user) {
+                    $q->orWhere('phone', $user->phone)->orWhere('email', $user->email);
+                }
+            })
+            ->where(function($q) {
+                $q->whereIn('status', ['delivered', 'approved', 'completed', 'paid', 'enrolled', 'processing'])
+                  ->orWhere('payment_status', 'paid');
+            })
+            ->exists();
+
+        $isAdmin = session()->has('admin_id') || Cookie::get('admin_id');
+        if (!$hasPurchased && !$isAdmin) {
+            return redirect('/product-details/' . $book->id . '/' . urlencode($book->name))
+                ->with('error', 'You need to purchase the softcopy (E-book) edition to read online.');
+        }
+
+        return view('user.pages.extra.book_reader', compact('book', 'user'));
+    }
+
+    // Secure PDF Stream: Serves PDF bytes with anti-piracy headers
+    public function streamProtectedBookPdf($id) {
+        $userId = Cookie::get('user_id');
+        $isAdmin = session()->has('admin_id') || Cookie::get('admin_id');
+
+        if (!$userId && !$isAdmin) {
+            abort(403, 'Unauthorized. Please sign in to read.');
+        }
+
+        $book = DB::table('books')->where('id', $id)->first();
+        if (!$book || empty($book->pdf_file) || !file_exists(public_path($book->pdf_file))) {
+            abort(404, 'PDF file not found.');
+        }
+
+        if (!$isAdmin) {
+            $user = $userId ? DB::table('users')->where('id', $userId)->first() : null;
+            $hasPurchased = DB::table('books_order')
+                ->where('pid', $id)
+                ->where('book_type', 'softcopy')
+                ->where(function($q) use ($userId, $user) {
+                    $q->where('user_id', $userId);
+                    if ($user) {
+                        $q->orWhere('phone', $user->phone)->orWhere('email', $user->email);
+                    }
+                })
+                ->where(function($q) {
+                    $q->whereIn('status', ['delivered', 'approved', 'completed', 'paid', 'enrolled', 'processing'])
+                      ->orWhere('payment_status', 'paid');
+                })
+                ->exists();
+
+            if (!$hasPurchased) {
+                abort(403, 'Access denied. You have not purchased this e-book.');
+            }
+        }
+
+        $filePath = public_path($book->pdf_file);
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="reader-protected.pdf"',
+            'Cache-Control' => 'private, no-cache, no-store, must-revalidate',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+            'X-Content-Type-Options' => 'nosniff'
+        ]);
+    }
+
+    // Student Dashboard: My E-Books
+    public function myBooks() {
+        $userId = Cookie::get('user_id');
+        if (!$userId) {
+            return redirect('/user-signin-singup')->with('adminError', 'Please sign in to view your books.');
+        }
+        $user = DB::table('users')->where('id', $userId)->first();
+
+        $myBooks = DB::table('books_order')
+            ->join('books', 'books_order.pid', '=', 'books.id')
+            ->select(
+                'books_order.id as order_id',
+                'books_order.orderNum',
+                'books_order.date',
+                'books_order.status as order_status',
+                'books_order.payment_status',
+                'books.id as book_id',
+                'books.name as book_name',
+                'books.image as book_image',
+                'books.pdf_file',
+                'books.description'
+            )
+            ->where('books_order.book_type', 'softcopy')
+            ->where(function($q) use ($userId, $user) {
+                $q->where('books_order.user_id', $userId);
+                if ($user) {
+                    $q->orWhere('books_order.phone', $user->phone)->orWhere('books_order.email', $user->email);
+                }
+            })
+            ->where(function($q) {
+                $q->whereIn('books_order.status', ['delivered', 'approved', 'completed', 'paid', 'enrolled', 'processing'])
+                  ->orWhere('books_order.payment_status', 'paid');
+            })
+            ->orderBy('books_order.id', 'desc')
+            ->get();
+
+        return view('user.pages.account.my_books', compact('myBooks', 'user'));
     }
 
     // End:: Books
