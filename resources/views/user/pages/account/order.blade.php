@@ -32,12 +32,17 @@ $courseOrders = DB::table('courses_order')
     ->get();
 
 $bookOrders = DB::table('books_order')
-    ->where(function($q) use ($userQ) {
+    ->leftJoin('books', 'books_order.pid', '=', 'books.id')
+    ->select('books_order.*', 'books.name as book_title', 'books.image as book_image')
+    ->where(function($q) use ($userQ, $userID) {
+        if ($userID) {
+            $q->where('books_order.user_id', $userID);
+        }
         if ($userQ) {
-            $q->where('phone', $userQ->phone)->orWhere('email', $userQ->email);
+            $q->orWhere('books_order.phone', $userQ->phone)->orWhere('books_order.email', $userQ->email);
         }
     })
-    ->orderBy('id', 'desc')
+    ->orderBy('books_order.id', 'desc')
     ->get();
 
 $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->count();
@@ -68,12 +73,12 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
 }
 
 .order-tab-btn:hover {
-    color: #03c6bb;
+    color: #007A55;
 }
 
 .order-tab-btn.active {
-    color: #03c6bb;
-    border-bottom-color: #03c6bb;
+    color: #007A55;
+    border-bottom-color: #007A55;
 }
 
 .order-tab-badge {
@@ -86,8 +91,8 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
 }
 
 .order-tab-btn.active .order-tab-badge {
-    background: rgba(3, 198, 187, 0.15);
-    color: #009e95;
+    background: rgba(0, 122, 85, 0.15);
+    color: #005a3e;
 }
 
 .course-thumb-tiny {
@@ -148,35 +153,44 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
 }
 </style>
 
-<!-- ============================ Dashboard: My Order Start ================================== -->
-<div class="rbt-page-banner-wrapper">
-    <div class="rbt-banner-image"></div>
-</div>
-
-<div class="rbt-dashboard-area rbt-section-overlayping-top rbt-section-gapBottom">
+<!-- Dashboard: My Order Start -->
+<div class="student-hero" style="padding: 22px 0 24px;">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <!-- Dashboard Top Profile Header -->
-                <div class="rbt-dashboard-content-wrapper">
-                    <div class="tutor-bg-photo bg-gradient-7 height-350"></div>
-                    <div class="rbt-tutor-information">
-                        <div class="rbt-tutor-information-left">
-                            <div class="thumbnail rbt-avatars size-lg">
-                                <img src="{{ asset('/') }}frontend/assets/images/user-student.png" alt="Student">
-                            </div>
-                            <div class="tutor-content">
-                                <h5 class="title">{{ $userName }}</h5>
-                                <ul class="rbt-meta rbt-meta-white mt--5">
-                                    <li><i class="feather-book"></i>{{ $enrolledCount }} Courses Enrolled</li>
-                                    <li><i class="feather-clock"></i>{{ $courseOrders->where('status', 'pending')->count() }} Pending Verification</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+        <div class="row align-items-center g-3">
+            <div class="col-lg-8 col-12">
+                <nav aria-label="breadcrumb">
+                    <ul class="d-flex align-items-center gap-2 p-0 mb-2" style="list-style: none; font-size: 13px;">
+                        <li><a href="{{ route('/') }}" style="color: #94a3b8; text-decoration: none;">Home</a></li>
+                        <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
+                        <li><a href="{{ route('user.myaccount.dashboard') }}" style="color: #94a3b8; text-decoration: none;">Dashboard</a></li>
+                        <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
+                        <li style="color: #007A55; font-weight: 600;">Payment & Order History</li>
+                    </ul>
+                </nav>
+                <div class="student-hero-badge">
+                    <i class="feather-credit-card"></i> Order History
                 </div>
+                <h2 class="student-hero-title mb-1" style="font-size: clamp(20px, 2.5vw, 28px); font-weight: 800; color: #ffffff;">
+                    Payment & Order History
+                </h2>
+                <p class="student-hero-desc mb-0" style="font-size: 13px; color: #94a3b8;">
+                    Review your transactions, course enrollment approvals, and book orders.
+                </p>
+            </div>
+            <div class="col-lg-4 col-12 text-lg-end">
+                <a href="{{ route('course') }}" class="rbt-btn btn-sm btn-gradient radius-round py-2 px-4 shadow-sm" style="font-size: 14px;">
+                    <span class="btn-text">Browse Courses</span>
+                    <span class="btn-icon"><i class="feather-arrow-right"></i></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Area -->
 
-                <div class="row g-5">
+<div class="bg-color-white" style="padding-top: 25px; padding-bottom: 40px;">
+    <div class="container">
+        <div class="row g-4">
                     <!-- Left Sidebar -->
                     <div class="col-lg-3">
                         @include('user.pages.account.sidebar')
@@ -321,11 +335,13 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
                                 <div id="booksTab" class="order-tab-pane" style="display: none;">
                                     @if($bookOrders->count() > 0)
                                     <div class="rbt-dashboard-table table-responsive mobile-table-750">
-                                        <table class="rbt-table table table-borderless">
+                                        <table class="rbt-table table table-borderless align-middle">
                                             <thead>
                                                 <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Product Info</th>
+                                                    <th>Order #</th>
+                                                    <th>Book Info</th>
+                                                    <th>Format</th>
+                                                    <th>Amount</th>
                                                     <th>Date</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
@@ -334,12 +350,57 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
                                             <tbody>
                                                 @foreach($bookOrders as $bo)
                                                 <tr>
-                                                    <th>#{{ $bo->orderNum }}</th>
-                                                    <td>Book Purchase</td>
-                                                    <td>{{ date("F d, Y", strtotime($bo->date)) }}</td>
-                                                    <td><span class="rbt-badge-5 bg-color-success-opacity color-success">{{ $bo->status }}</span></td>
+                                                    <th><strong>#{{ $bo->orderNum }}</strong></th>
                                                     <td>
-                                                        <a target="_blank" href="{{ url('/ordres-info/'.$bo->orderNum) }}" class="rbt-btn btn-xs bg-primary-opacity radius-round">View details</a>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            @if(!empty($bo->book_image))
+                                                                <img src="{{ asset($bo->book_image) }}" alt="" style="width: 38px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                                            @endif
+                                                            <div>
+                                                                <div class="fw-bold" style="font-size: 14px; max-width: 200px; line-height: 1.3;">
+                                                                    {{ $bo->book_title ?? 'Book #' . $bo->pid }}
+                                                                </div>
+                                                                <small class="text-muted">Qty: {{ $bo->quantity }}</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        @if(($bo->book_type ?? 'hardcopy') == 'softcopy')
+                                                            <span class="badge" style="background: rgba(14, 165, 233, 0.12); color: #0284c7; font-weight: 700;">
+                                                                <i class="feather-book-open me-1"></i> E-Book (Softcopy)
+                                                            </span>
+                                                        @else
+                                                            <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #059669; font-weight: 700;">
+                                                                <i class="feather-book me-1"></i> Hardcopy
+                                                            </span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <strong>৳ {{ number_format($bo->amount ?: ($bo->price * $bo->quantity), 0) }}</strong>
+                                                    </td>
+                                                    <td>
+                                                        <small class="text-muted">{{ date("d M, Y", strtotime($bo->date)) }}</small>
+                                                    </td>
+                                                    <td>
+                                                        @if($bo->status == 'delivered' || $bo->status == 'enrolled' || $bo->status == 'approved')
+                                                            <span class="status-badge-custom status-enrolled"><i class="feather-check-circle"></i> {{ ucfirst($bo->status) }}</span>
+                                                        @elseif($bo->status == 'pending')
+                                                            <span class="status-badge-custom status-pending"><i class="feather-clock"></i> Pending</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">{{ ucfirst($bo->status) }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-1">
+                                                            @if(($bo->book_type ?? '') == 'softcopy' && in_array($bo->status, ['delivered', 'approved', 'completed', 'paid', 'enrolled']))
+                                                                <a href="{{ route('user.book.read', $bo->pid) }}" class="rbt-btn btn-xs btn-gradient radius-round" title="Read Online (Anti-Piracy)">
+                                                                    <i class="feather-eye me-1"></i> Read Online
+                                                                </a>
+                                                            @endif
+                                                            <a target="_blank" href="{{ url('/ordres-info/'.$bo->orderNum) }}" class="rbt-btn btn-xs bg-primary-opacity radius-round">
+                                                                Details
+                                                            </a>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -351,7 +412,7 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
                                         <i class="feather-shopping-bag text-muted" style="font-size: 42px;"></i>
                                         <h5 class="mt-3 mb-1">No Book Orders Found</h5>
                                         <p class="text-muted small">You haven't ordered any books yet.</p>
-                                        <a href="{{ route('shop') }}" class="rbt-btn btn-sm btn-gradient radius-round mt-2">Visit Shop</a>
+                                        <a href="{{ route('shop') }}" class="rbt-btn btn-sm btn-gradient radius-round mt-2">Explore Books</a>
                                     </div>
                                     @endif
                                 </div>
@@ -370,7 +431,7 @@ $enrolledCount = $courseOrders->whereIn('status', ['enrolled', 'delivered'])->co
 <div class="modal fade" id="receiptModal" tabindex="-1" aria-labelledby="receiptModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="border-radius: 16px; border: none; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-            <div class="modal-header" style="background: linear-gradient(135deg, #03c6bb 0%, #009e95 100%); color: #ffffff;">
+            <div class="modal-header" style="background: linear-gradient(135deg, #007A55 0%, #005a3e 100%); color: #ffffff;">
                 <h5 class="modal-title text-white" id="receiptModalLabel">
                     <i class="feather-file-text me-2"></i> Payment Receipt & Details
                 </h5>
