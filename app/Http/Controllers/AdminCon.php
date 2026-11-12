@@ -235,13 +235,31 @@ class AdminCon extends Controller
     public function Add_Books(Request $request) {
 
         $book_image = $request->file('image');
-        $name_gen = hexdec(uniqid()).".".$book_image->getClientOriginalExtension();
-        Image::make($book_image)->resize(600, 600)->save('images/'.$name_gen);
-        $last_img = 'images/'.$name_gen;
+        $last_img = null;
+        if ($book_image) {
+            $name_gen = hexdec(uniqid()).".".$book_image->getClientOriginalExtension();
+            Image::make($book_image)->resize(600, 600)->save('images/'.$name_gen);
+            $last_img = 'images/'.$name_gen;
+        }
+
+        $pdf_path = null;
+        if ($request->hasFile('pdf_file')) {
+            $pdf = $request->file('pdf_file');
+            $pdf_name = 'book_pdf_' . time() . '_' . uniqid() . '.' . $pdf->getClientOriginalExtension();
+            if (!file_exists(public_path('uploads/books/pdfs'))) {
+                mkdir(public_path('uploads/books/pdfs'), 0777, true);
+            }
+            $pdf->move(public_path('uploads/books/pdfs'), $pdf_name);
+            $pdf_path = 'uploads/books/pdfs/' . $pdf_name;
+        }
 
         $data = array();
         $data['name'] = $request->name;
-        $data['price'] = $request->price;
+        $data['hardcopy_price'] = $request->hardcopy_price ?: ($request->price ?: 0);
+        $data['softcopy_price'] = $request->softcopy_price ?: null;
+        $data['price'] = $request->hardcopy_price ?: ($request->price ?: ($request->softcopy_price ?: 0));
+        $data['book_type'] = $request->book_type ?: 'both';
+        $data['pdf_file'] = $pdf_path;
         $data['description'] = $request->description;
         $data['image'] = $last_img;
         $data['active'] = $request->active;
@@ -263,7 +281,6 @@ class AdminCon extends Controller
         $book_image = $request->file('image');
 
         if($book_image){
-
             $name_gen = hexdec(uniqid()).".".$book_image->getClientOriginalExtension();
             Image::make($book_image)->resize(600, 600)->save('images/'.$name_gen);
             $last_img = 'images/'.$name_gen;
@@ -274,12 +291,28 @@ class AdminCon extends Controller
                 }
             }
 
-
             $data['image'] = $last_img;
         }
 
+        if ($request->hasFile('pdf_file')) {
+            $old_pdf = $request->old_pdf;
+            if ($old_pdf && file_exists(public_path($old_pdf))) {
+                @unlink(public_path($old_pdf));
+            }
+            $pdf = $request->file('pdf_file');
+            $pdf_name = 'book_pdf_' . time() . '_' . uniqid() . '.' . $pdf->getClientOriginalExtension();
+            if (!file_exists(public_path('uploads/books/pdfs'))) {
+                mkdir(public_path('uploads/books/pdfs'), 0777, true);
+            }
+            $pdf->move(public_path('uploads/books/pdfs'), $pdf_name);
+            $data['pdf_file'] = 'uploads/books/pdfs/' . $pdf_name;
+        }
+
         $data['name'] = $request->name;
-        $data['price'] = $request->price;
+        $data['hardcopy_price'] = $request->hardcopy_price ?: ($request->price ?: 0);
+        $data['softcopy_price'] = $request->softcopy_price ?: null;
+        $data['price'] = $request->hardcopy_price ?: ($request->price ?: ($request->softcopy_price ?: 0));
+        $data['book_type'] = $request->book_type ?: 'both';
         $data['description'] = $request->description;
         $data['active'] = $request->active;
 
@@ -289,22 +322,39 @@ class AdminCon extends Controller
     }
 
     public function Delete_Books($id) {
-        // Retrieve the teacher record to get the image path
+        // Retrieve the book record to get image and pdf path
         $book = DB::table('books')->where('id', $id)->first();
 
         if ($book) {
             // Delete the image file if it exists
-            if (file_exists($book->image)) {
+            if ($book->image && file_exists($book->image)) {
                 unlink($book->image);
             }
+            // Delete the PDF file if it exists
+            if ($book->pdf_file && file_exists(public_path($book->pdf_file))) {
+                @unlink(public_path($book->pdf_file));
+            }
 
-            // Delete the teacher record from the database
+            // Delete the book record from the database
             DB::table('books')->where('id', $id)->delete();
 
             return redirect()->route('cms.books')->with('status', 'Book Deleted Successfully');
         }
 
-        return redirect()->route('cms.books')->with('error', 'Teacher Not Found');
+        return redirect()->route('cms.books')->with('error', 'Book Not Found');
+    }
+
+    public function Preview_Book_PDF($id) {
+        $book = DB::table('books')->where('id', $id)->first();
+        if (!$book || empty($book->pdf_file) || !file_exists(public_path($book->pdf_file))) {
+            return redirect()->back()->with('error', 'PDF file not found for this book.');
+        }
+
+        $filePath = public_path($book->pdf_file);
+        return response()->file($filePath, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . basename($filePath) . '"'
+        ]);
     }
     //End:: Books
 
@@ -320,7 +370,11 @@ class AdminCon extends Controller
 
     public function Book_order_details($id) {
         $orders_info = DB::table('books_order')->where('id', $id)->first();
-        return view('cms.orders.orderDetails', compact('orders_info'));
+        $gateway = null;
+        if ($orders_info && !empty($orders_info->payment_gateway_id)) {
+            $gateway = \App\Models\PaymentGateway::find($orders_info->payment_gateway_id);
+        }
+        return view('cms.orders.orderDetails', compact('orders_info', 'gateway'));
     }
 
     public function Course_order_details($id) {
