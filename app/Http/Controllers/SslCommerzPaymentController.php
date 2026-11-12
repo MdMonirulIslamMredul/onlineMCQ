@@ -99,43 +99,119 @@ class SslCommerzPaymentController extends Controller
     }
     public function buybookpay(Request $request)
     {
-        if ($request->radio == "cash") {
-            $request->validate([
-                'name' => 'required',
-                'phone' => 'required',
-                'email' => 'required',
-                'address' => 'required',
-                // 'radio' => 'required',
-            ]);
+        $bookType = $request->book_type ?: 'hardcopy';
+        $paymentMethodType = $request->payment_method_type ?? ($request->radio ?? 'gateway');
+
+        // Common validation rules
+        $rules = [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'required|email|max:255',
+            'address' => $bookType === 'hardcopy' ? 'required|string|max:255' : 'nullable|string|max:255',
+            'pid' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|numeric|min:1',
+        ];
+
+        // 1. Cash on Delivery (COD) - only for Hardcopy physical delivery
+        if ($paymentMethodType === 'cash' || $request->radio === 'cash') {
+            $request->validate($rules);
 
             $total_order = DB::table('books_order')->count('id');
             $current_order = $total_order + 1;
-            $order_num = 'COD'.date("dmy").$current_order;
+            $order_num = 'COD' . date("dmy") . $current_order;
 
-            $data = array();
-            $data['name'] = $request->name;
-            $data['email'] = $request->email;
-            $data['phone'] = $request->phone;
-            $data['address'] = $request->address;
-            $data['pid'] = $request->pid;
-            $data['price'] = $request->price;
-            $data['quantity'] = $request->quantity;
-            $data['amount'] = $request->price*$request->quantity;
-            $data['orderNum'] = $order_num;
-            $data['status'] = 'pending';
-            $data['payment_status'] = 'unpaid';
-            $data['date'] = Carbon::now();
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address ?? '',
+                'pid' => $request->pid,
+                'user_id' => Cookie::get('user_id'),
+                'book_type' => $bookType,
+                'price' => $request->price,
+                'quantity' => $request->quantity,
+                'amount' => $request->price * $request->quantity,
+                'currency' => 'BDT',
+                'orderNum' => $order_num,
+                'transaction_id' => 'COD_' . uniqid(),
+                'payment_method' => 'Cash on Delivery',
+                'payment_type' => 'cod',
+                'status' => 'pending',
+                'payment_status' => 'unpaid',
+                'date' => Carbon::now(),
+            ];
 
-        // if ($request->order=="cash") {
-
-        // }
             DB::table('books_order')->insert($data);
 
-            return redirect('/orders-info/'.$order_num)->with('userSuccess', 'Order Confirmed Successfully.');
-        }else{
+            return redirect('/orders-info/' . $order_num)->with('userSuccess', 'Cash on Delivery order placed successfully! Our team will process your book shipment.');
+        }
 
+        // 2. Manual Payment Gateway (bKash / Nagad / Rocket / Bank Transfer)
+        if ($request->has('payment_gateway_id')) {
+            $rules['payment_gateway_id'] = 'required|exists:payment_gateways,id';
+            $rules['trx_id'] = 'required|string|max:255';
+            $rules['screenshot'] = 'required|image|mimes:jpeg,png,jpg,webp,svg|max:5120';
 
+            $gateway = \App\Models\PaymentGateway::findOrFail($request->payment_gateway_id);
 
+            if ($gateway->type === 'mfs') {
+                $rules['sender_number'] = 'required|string|max:50';
+            } else {
+                $rules['bank_name'] = 'required|string|max:255';
+                $rules['bank_account_number'] = 'required|string|max:100';
+            }
+
+            $request->validate($rules);
+
+            $screenshotPath = null;
+            if ($request->hasFile('screenshot')) {
+                $file = $request->file('screenshot');
+                $filename = 'book_pay_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                if (!file_exists(public_path('uploads/payments'))) {
+                    mkdir(public_path('uploads/payments'), 0777, true);
+                }
+                $file->move(public_path('uploads/payments'), $filename);
+                $screenshotPath = 'uploads/payments/' . $filename;
+            }
+
+            $total_order = DB::table('books_order')->count('id');
+            $current_order = $total_order + 1;
+            $order_num = 'BOD' . date("dmy") . $current_order;
+
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'address' => $request->address ?? '',
+                'pid' => $request->pid,
+                'user_id' => Cookie::get('user_id'),
+                'book_type' => $bookType,
+                'price' => $request->price,
+                'quantity' => $request->quantity,
+                'amount' => $request->price * $request->quantity,
+                'currency' => 'BDT',
+                'orderNum' => $order_num,
+                'transaction_id' => $request->trx_id,
+                'trx_id' => $request->trx_id,
+                'payment_gateway_id' => $gateway->id,
+                'payment_method' => $gateway->name,
+                'payment_type' => $gateway->type,
+                'sender_number' => $request->sender_number ?? null,
+                'bank_name' => $request->bank_name ?? ($gateway->type === 'bank' ? $gateway->bank_name : null),
+                'bank_account_number' => $request->bank_account_number ?? null,
+                'screenshot' => $screenshotPath,
+                'status' => 'pending',
+                'payment_status' => 'pending',
+                'date' => Carbon::now(),
+            ];
+
+            DB::table('books_order')->insert($data);
+
+            return redirect('/orders-info/' . $order_num)->with('userSuccess', 'Payment submitted successfully! Your payment proof is under manual verification by our team.');
+        }
+
+        // 3. Fallback to SSLCommerz
         $post_data = array();
         $post_data['total_amount'] = $request->price * $request->quantity; # You cant not pay less than 10
         $post_data['currency'] = "BDT";
@@ -189,6 +265,8 @@ class SslCommerzPaymentController extends Controller
         $data['phone'] = $request->phone;
         $data['address'] = $request->address;
         $data['pid'] = $request->pid;
+        $data['user_id'] = Cookie::get('user_id');
+        $data['book_type'] = $request->book_type ?: 'hardcopy';
         $data['price'] = $request->price;
         $data['amount'] =  $post_data['total_amount'];
         $data['quantity'] = $request->quantity;
@@ -215,13 +293,6 @@ class SslCommerzPaymentController extends Controller
             print_r($payment_options);
             $payment_options = array();
         }
-        }
-
-        # Here you have to receive all the order data to initate the payment.
-        # Let's say, your oder transaction informations are saving in a table called "orders"
-        # In "orders" table, order unique identity is "transaction_id". "status" field contain status of the transaction, "amount" is the order amount to be paid and "currency" is for storing Site Currency which will be checked with paid currency.
-
-
     }
 
     // public function payViaAjax(Request $request)
@@ -464,9 +535,10 @@ class SslCommerzPaymentController extends Controller
                 in order table as Processing or Complete.
                 Here you can also sent sms or email for successfull transaction to customer
                 */
+                $targetStatus = (optional($books_order)->book_type == 'softcopy') ? 'delivered' : 'processing';
                 $update_product = DB::table('books_order')
                     ->where('transaction_id', $tran_id)
-                    ->update(['status' => 'pending','payment_status' => 'paid']);
+                    ->update(['status' => $targetStatus, 'payment_status' => 'paid']);
 
 
 
