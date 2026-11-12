@@ -39,8 +39,8 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    background: rgba(3, 198, 187, 0.12);
-    color: #03c6bb;
+    background: rgba(0, 122, 85, 0.12);
+    color: #007A55;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,40 +79,52 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
     position: relative;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
-.checkout-input-icon {
+.checkout-input-wrap .checkout-input-icon {
     position: absolute;
     left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
     color: #94a3b8;
     font-size: 16px;
     pointer-events: none;
+    z-index: 2;
     transition: color 0.2s ease;
 }
 
+.checkout-input-wrap input.checkout-input,
+.checkout-input-wrap .checkout-input,
+input.checkout-input,
 .checkout-input {
-    width: 100%;
-    height: 50px;
-    padding: 10px 16px 10px 46px;
-    font-size: 14.5px;
-    font-weight: 500;
-    color: #1e293b;
-    background-color: #ffffff;
-    border: 1.5px solid #cbd5e1;
-    border-radius: 12px;
-    outline: none;
+    width: 100% !important;
+    height: 50px !important;
+    padding: 10px 16px 10px 52px !important;
+    padding-left: 52px !important;
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    outline: none !important;
+    box-shadow: none !important;
     transition: all 0.2s ease;
 }
 
+.checkout-input-wrap input.checkout-input:focus,
+.checkout-input-wrap .checkout-input:focus,
+input.checkout-input:focus,
 .checkout-input:focus {
-    border-color: #03c6bb;
-    box-shadow: 0 0 0 4px rgba(3, 198, 187, 0.16);
-    background-color: #ffffff;
+    border-color: #007A55 !important;
+    box-shadow: 0 0 0 4px rgba(0, 122, 85, 0.16) !important;
+    background-color: #ffffff !important;
 }
 
 .checkout-input:focus + .checkout-input-icon,
 .checkout-input-wrap:focus-within .checkout-input-icon {
-    color: #03c6bb;
+    color: #007A55 !important;
 }
 
 /* Gateway Selection Grid */
@@ -137,15 +149,15 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 }
 
 .gateway-option-card:hover {
-    border-color: #03c6bb;
+    border-color: #007A55;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(3, 198, 187, 0.12);
+    box-shadow: 0 6px 16px rgba(0, 122, 85, 0.12);
 }
 
 .gateway-option-card.selected {
-    border-color: #03c6bb;
+    border-color: #007A55;
     background: #f0fdfa;
-    box-shadow: 0 0 0 3px rgba(3, 198, 187, 0.2);
+    box-shadow: 0 0 0 3px rgba(0, 122, 85, 0.2);
 }
 
 .gateway-option-card .check-circle {
@@ -165,7 +177,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 }
 
 .gateway-option-card.selected .check-circle {
-    background: #03c6bb;
+    background: #007A55;
 }
 
 .gateway-logo-container {
@@ -218,7 +230,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 /* Gateway Instructions Card */
 .gateway-detail-panel {
     background: #f8fafc;
-    border: 1.5px dashed #03c6bb;
+    border: 1.5px dashed #007A55;
     border-radius: 14px;
     padding: 20px;
     margin-bottom: 24px;
@@ -248,9 +260,9 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 }
 
 .copy-pill-btn:hover {
-    background: #03c6bb;
+    background: #007A55;
     color: #ffffff;
-    border-color: #03c6bb;
+    border-color: #007A55;
 }
 
 /* Screenshot Upload Box */
@@ -266,7 +278,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 }
 
 .screenshot-upload-box:hover {
-    border-color: #03c6bb;
+    border-color: #007A55;
     background: #f0fdfa;
 }
 
@@ -315,7 +327,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 .checkout-agreement-box input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: #03c6bb;
+    accent-color: #007A55;
     cursor: pointer;
     margin-top: 3px;
     flex-shrink: 0;
@@ -329,7 +341,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
 }
 
 .checkout-agreement-text a {
-    color: #03c6bb;
+    color: #007A55;
     font-weight: 600;
     text-decoration: underline;
 }
@@ -380,8 +392,8 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    background: rgba(3, 198, 187, 0.12);
-    color: #009e95;
+    background: rgba(0, 122, 85, 0.12);
+    color: #005a3e;
     margin-bottom: 8px;
 }
 
@@ -416,7 +428,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
     font-family: var(--font-heading, 'Outfit', sans-serif);
     font-size: 28px;
     font-weight: 800;
-    color: #009e95;
+    color: #005a3e;
 }
 
 .order-confirm-btn {
@@ -424,7 +436,7 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
     height: 54px;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, #03c6bb 0%, #009e95 100%);
+    background: linear-gradient(135deg, #007A55 0%, #005a3e 100%);
     color: #ffffff;
     font-family: var(--font-heading, 'Outfit', sans-serif);
     font-size: 16px;
@@ -435,13 +447,13 @@ $gateways = isset($gateways) && count($gateways) ? $gateways : \App\Models\Payme
     gap: 10px;
     margin-top: 24px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(3, 198, 187, 0.35);
+    box-shadow: 0 4px 15px rgba(0, 122, 85, 0.35);
     transition: all 0.25s ease;
 }
 
 .order-confirm-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(3, 198, 187, 0.45);
+    box-shadow: 0 8px 25px rgba(0, 122, 85, 0.45);
     color: #ffffff;
 }
 
@@ -506,7 +518,7 @@ html.dark-theme .checkout-input,
 
 html.dark-theme .checkout-input:focus,
 [data-theme="dark"] .checkout-input:focus {
-    border-color: #03c6bb !important;
+    border-color: #007A55 !important;
     background-color: #0f172a !important;
 }
 
@@ -518,14 +530,14 @@ html.dark-theme .gateway-option-card,
 
 html.dark-theme .gateway-option-card.selected,
 [data-theme="dark"] .gateway-option-card.selected {
-    border-color: #03c6bb !important;
+    border-color: #007A55 !important;
     background: #0c2331 !important;
 }
 
 html.dark-theme .gateway-detail-panel,
 [data-theme="dark"] .gateway-detail-panel {
     background: #0f172a !important;
-    border-color: #03c6bb !important;
+    border-color: #007A55 !important;
 }
 
 html.dark-theme .copy-pill-btn,
@@ -561,7 +573,7 @@ html.dark-theme .checkout-guarantee-strip,
 
 html.dark-theme .order-total-amount,
 [data-theme="dark"] .order-total-amount {
-    color: #03c6bb !important;
+    color: #007A55 !important;
 }
 </style>
 
@@ -576,7 +588,7 @@ html.dark-theme .order-total-amount,
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
                         <li><a href="{{ route('course') }}" style="color: #94a3b8; text-decoration: none;">Courses</a></li>
                         <li style="color: #64748b;"><i class="feather-chevron-right"></i></li>
-                        <li style="color: #03c6bb; font-weight: 600;">Checkout & Payment</li>
+                        <li style="color: #007A55; font-weight: 600;">Checkout & Payment</li>
                     </ul>
                 </nav>
                 <div class="student-hero-badge">
@@ -703,7 +715,7 @@ html.dark-theme .order-total-amount,
                                     @if($gw->logo && file_exists(public_path($gw->logo)))
                                         <img src="{{ asset($gw->logo) }}" alt="{{ $gw->name }}" class="gateway-logo-img">
                                     @else
-                                        <div style="font-weight: 800; color: #03c6bb; font-size: 16px;">
+                                        <div style="font-weight: 800; color: #007A55; font-size: 16px;">
                                             <i class="{{ $gw->type === 'bank' ? 'feather-home' : 'feather-smartphone' }} me-1"></i>
                                             {{ $gw->name }}
                                         </div>
